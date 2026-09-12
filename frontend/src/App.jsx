@@ -3,11 +3,16 @@ import UploadPanel from './components/UploadPanel.jsx'
 import AgentStatusRail from './components/AgentStatusRail.jsx'
 import ActivityTimeline from './components/ActivityTimeline.jsx'
 import DecisionSummary from './components/DecisionSummary.jsx'
+import RouteGraph from './components/RouteGraph.jsx'
+import WhatIfPanel from './components/WhatIfPanel.jsx'
 import { usePipeline } from './hooks/usePipeline.js'
 import './App.css'
 
 export default function App() {
-  const { agents, timeline, decision, phase, error, run } = usePipeline()
+  const {
+    agents, timeline, decision, phase, error, run, maxHops,
+    graph, isSimulated, baseWasteDna, applySimulation, clearSimulation,
+  } = usePipeline()
   const isRunning = phase === 'running'
 
   return (
@@ -29,9 +34,24 @@ export default function App() {
         </section>
 
         <aside className="app-main__right">
-          <DecisionSummary decision={decision} />
+          <DecisionSummary decision={isSimulated ? graph?.decision : decision} />
         </aside>
       </main>
+
+      <section className="app-graph-row">
+        <RouteGraph
+          wasteDna={graph?.wasteDna}
+          discovery={graph?.discovery}
+          impactPerRoute={graph?.impactPerRoute}
+          decision={graph?.decision}
+        />
+        <WhatIfPanel
+          wasteDna={baseWasteDna}
+          maxHops={maxHops}
+          onResult={applySimulation}
+          onReset={clearSimulation}
+        />
+      </section>
     </div>
   )
 }

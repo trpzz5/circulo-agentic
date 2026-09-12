@@ -3,7 +3,11 @@
 Checks persistent memory before recommending a route, explains every
 rejection with a concrete reason, breaks close economic calls using verified
 track record rather than always chasing the highest number, and writes new
-outcomes back to memory so future runs have more precedent than this one.
+outcomes back to memory so future runs have more precedent than this one —
+UNLESS this is a what-if simulation (`payload.persist_to_memory is False`),
+in which case memory is still read for context but never written to. A
+hypothetical manifest the user is dragging a slider on must never become a
+"verified prior transaction" for a future, real analysis.
 
 Never exposes hidden chain-of-thought — `debate` is a short list of
 concise, user-facing, verifiable reasoning lines.
@@ -38,6 +42,7 @@ class DecisionAgent(BaseAgent[DecisionRequest, DecisionPayload]):
 
     async def execute(self, payload: DecisionRequest, run_id: str) -> AgentResult[DecisionPayload]:
         dna = payload.waste_dna
+        persist = payload.persist_to_memory
 
         with get_connection() as conn:
             original_material_id, _ = resolve_material_id(conn, dna.material)
@@ -68,18 +73,19 @@ class DecisionAgent(BaseAgent[DecisionRequest, DecisionPayload]):
                 )
             else:
                 debate.append(f"Direct route to {route['factory_name']} rejected: {reason_text}.")
-                record_outcome(
-                    factory_id=factory_id,
-                    factory_name=route["factory_name"],
-                    material_id=material_id,
-                    material_name=route.get("material_name", dna.material),
-                    source_factory=dna.source_factory,
-                    outcome="rejected",
-                    reason=(route.get("reasons") or [route.get("status", "rejected")])[0],
-                    limit_percent=route.get("moisture_limit_percent"),
-                    observed_percent=dna.moisture_percent,
-                    notes="Recorded automatically by the Decision Agent.",
-                )
+                if persist:
+                    record_outcome(
+                        factory_id=factory_id,
+                        factory_name=route["factory_name"],
+                        material_id=material_id,
+                        material_name=route.get("material_name", dna.material),
+                        source_factory=dna.source_factory,
+                        outcome="rejected",
+                        reason=(route.get("reasons") or [route.get("status", "rejected")])[0],
+                        limit_percent=route.get("moisture_limit_percent"),
+                        observed_percent=dna.moisture_percent,
+                        notes="Recorded automatically by the Decision Agent.",
+                    )
 
             rejected_routes.append({
                 "factory_id": factory_id,
@@ -170,32 +176,4 @@ class DecisionAgent(BaseAgent[DecisionRequest, DecisionPayload]):
         if len(rejected_routes) > 0 and any(r["prior_outcomes"] for r in rejected_routes):
             confidence = min(confidence + 0.05, 0.95)
 
-        # ── 4) Log this decision as a new memory record ─────────────────────
-        record = record_outcome(
-            factory_id=chosen["destination_factory_id"],
-            factory_name=chosen["destination_factory_name"],
-            material_id=chosen["material_id_for_memory"] or "unknown",
-            material_name=chosen["material_id_for_memory"] or dna.material,
-            source_factory=dna.source_factory,
-            outcome="accepted",
-            reason="selected_by_decision_agent",
-            notes=f"Ecosystem value Rs.{chosen['ecosystem_value']:,.2f}; route={chosen['label']}.",
-        )
-        memory_hits.append(record)
-
-        notes = [
-            f"Evaluated {len(scored)} viable candidate(s) and {len(rejected_routes)} rejected candidate(s).",
-            f"Recommended: {chosen['label']} (confidence {confidence:.0%}).",
-        ]
-
-        return AgentResult(
-            data=DecisionPayload(
-                recommended_route_id=chosen["route_key"],
-                rejected_routes=rejected_routes,
-                debate=debate,
-                memory_hits=memory_hits,
-                confidence=confidence,
-            ),
-            source=ExecutionSource.DETERMINISTIC,
-            notes=notes,
-        )
+        # ── 4) Log this decision as a new

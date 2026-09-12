@@ -1,0 +1,66 @@
+.route-graph {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.route-graph--empty {
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px;
+}
+
+.route-graph__placeholder {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin: 0;
+}
+
+.route-graph__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.route-graph__legend {
+  display: flex;
+  align-items: center;
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.route-graph__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 12px;
+  margin-right: 4px;
+}
+.route-graph__dot:first-child { margin-left: 0; }
+
+.route-graph__dot--source { background: var(--accent-amber); }
+.route-graph__dot--processor { background: var(--accent-blue); }
+.route-graph__dot--recommended { background: var(--accent-green); }
+.route-graph__dot--rejected { background: var(--accent-red); }
+
+.route-graph__canvas {
+  flex: 1;
+  min-height: 340px;
+}
+
+.route-graph__canvas .react-flow {
+  background: var(--bg-panel);
+}
+
+.route-graph__canvas .react-flow__attribution {
+  display: none;
+}

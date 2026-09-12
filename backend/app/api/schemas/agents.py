@@ -2,6 +2,9 @@
 
 Each agent is individually invocable (useful for debugging and for the
 frontend's step-by-step demo mode); Phase 7 adds /api/analyze to chain them.
+Phase 9 adds /api/simulate — the what-if endpoint reuses these same request/
+response shapes so Discovery, Impact and Decision behave identically whether
+they're driven by a real manifest or a slider the user is dragging.
 """
 
 from __future__ import annotations
@@ -70,6 +73,16 @@ class DecisionRequest(BaseModel):
     routes: list[dict[str, Any]] = Field(default_factory=list)
     impact: dict[str, Any] = Field(default_factory=dict)
     run_id: str | None = None
+    persist_to_memory: bool = Field(
+        default=True,
+        description=(
+            "True for a real /api/analyze run — the decision is written to "
+            "persistent memory as precedent for future runs. False for a "
+            "/api/simulate what-if run: memory is still READ for context, "
+            "but the hypothetical outcome is never written back, so dragging "
+            "a slider can never fabricate a fake track record."
+        ),
+    )
 
 
 class DecisionPayload(BaseModel):
@@ -87,3 +100,23 @@ class DecisionPayload(BaseModel):
 
 
 DecisionResponse = AgentResponse[DecisionPayload]
+
+
+# ── Phase 9: What-If Simulator ──────────────────────────────────────────────
+
+class SimulateRequest(BaseModel):
+    """Re-run Discovery -> Impact -> Decision against an adjusted Waste DNA.
+
+    Skips the DNA agent entirely (the manifest is already structured — the
+    user is dragging sliders, not uploading a new PDF) and never persists to
+    memory (see DecisionRequest.persist_to_memory above).
+    """
+    waste_dna: WasteDNA
+    max_hops: int = Field(default=2, ge=1, le=3)
+
+
+class SimulateResponse(BaseModel):
+    waste_dna: WasteDNA
+    discovery: DiscoveryResponse
+    impact: ImpactResponse
+    decision: DecisionResponse

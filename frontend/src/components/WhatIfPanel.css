@@ -1,0 +1,91 @@
+.what-if {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+
+.what-if--empty {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.what-if__placeholder {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin: 0;
+}
+
+.what-if__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.what-if__status {
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--accent-amber);
+}
+
+.what-if__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.what-if__field-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.what-if__field input[type='range'] {
+  width: 100%;
+  accent-color: var(--accent-blue);
+}
+
+.what-if__error {
+  background: rgba(239, 74, 92, 0.1);
+  border: 1px solid var(--accent-red);
+  color: var(--accent-red);
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.what-if__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.what-if__hint {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.what-if__footer button {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--text-secondary);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.what-if__footer button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.what-if__footer button:not(:disabled):hover {
+  border-color: var(--accent-blue);
+  color: var(--text-primary);
+}

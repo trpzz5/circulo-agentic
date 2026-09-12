@@ -1,5 +1,5 @@
 .app-shell {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -29,7 +29,7 @@
   display: grid;
   grid-template-columns: 1.6fr 1fr;
   gap: 16px;
-  min-height: 0;
+  min-height: 560px;
 }
 
 .app-main__left {
@@ -46,6 +46,13 @@
 
 .app-main__right > * { flex: 1; }
 
+.app-graph-row {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 16px;
+  min-height: 420px;
+}
+
 .app-error {
   background: rgba(239, 74, 92, 0.1);
   border: 1px solid var(--accent-red);
@@ -57,4 +64,5 @@
 
 @media (max-width: 900px) {
   .app-main { grid-template-columns: 1fr; }
+  .app-graph-row { grid-template-columns: 1fr; }
 }

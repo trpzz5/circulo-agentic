@@ -1,6 +1,6 @@
 /**
  * Thin wrapper over the CIRCULO backend API. Every call here corresponds
- * exactly to a Phase 1-7 endpoint — nothing invented, nothing hidden.
+ * exactly to a Phase 1-9 endpoint — nothing invented, nothing hidden.
  */
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api'
@@ -74,5 +74,19 @@ export async function getFactories() {
 
 export async function getMemory() {
   const res = await fetch(`${API_BASE}/memory`)
+  return handleResponse(res)
+}
+
+/**
+ * Phase 9 — What-If Simulator. Re-runs Discovery -> Impact -> Decision for
+ * an adjusted Waste DNA and returns the full result synchronously. Never
+ * persisted to memory server-side (see backend/app/agents/decision_agent.py).
+ */
+export async function simulateWhatIf({ wasteDna, maxHops = 2 }) {
+  const res = await fetch(`${API_BASE}/simulate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ waste_dna: wasteDna, max_hops: maxHops }),
+  })
   return handleResponse(res)
 }
