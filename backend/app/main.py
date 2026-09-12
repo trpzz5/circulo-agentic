@@ -48,7 +48,14 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         init_db()
     except Exception:
         logger.exception("FATAL: database initialisation failed")
-        raise  # refuse to start in a broken state
+        raise
+
+    try:
+        from app.memory.memory_store import seed_if_empty
+        seed_if_empty()
+    except Exception:
+        logger.exception("FATAL: memory store initialisation failed")
+        raise
 
     yield
     logger.info("CIRCULO shutting down.")

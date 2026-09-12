@@ -2,8 +2,7 @@
 
 Deliberately NOT an ORM. CIRCULO's data is ~15 read-mostly rows; raw sqlite3
 with a Row factory is faster to start, easier to reason about, and has no
-session/identity-map failure modes. The *schema* lives in app/database/ (Phase 2);
-this module only manages connections.
+session/identity-map failure modes.
 """
 
 from __future__ import annotations
@@ -11,18 +10,21 @@ from __future__ import annotations
 import logging
 import sqlite3
 from contextlib import contextmanager
+from pathlib import Path
 from typing import Iterator
 
 from app.config import get_settings
 
 logger = logging.getLogger(__name__)
 
-# Applied to every new connection.
+SCHEMA_PATH = Path(__file__).resolve().parent / "schema.sql"
+SCHEMA_VERSION = "2"  # bumped from Phase 1's "0" now that the domain schema exists
+
 _PRAGMAS: tuple[str, ...] = (
-    "PRAGMA journal_mode = WAL",      # seed script + API can read/write together
-    "PRAGMA foreign_keys = ON",       # OFF by default in SQLite — we want it ON
-    "PRAGMA busy_timeout = 5000",     # wait 5s instead of raising 'database is locked'
-    "PRAGMA synchronous = NORMAL",    # safe with WAL, noticeably faster
+    "PRAGMA journal_mode = WAL",
+    "PRAGMA foreign_keys = ON",
+    "PRAGMA busy_timeout = 5000",
+    "PRAGMA synchronous = NORMAL",
 )
 
 
@@ -36,17 +38,10 @@ def _create_connection() -> sqlite3.Connection:
     db_path.parent.mkdir(parents=True, exist_ok=True)
 
     try:
-        conn = sqlite3.connect(
-            db_path,
-            # Allows the connection to be used from FastAPI's threadpool.
-            # Safe here because each request gets its own short-lived connection.
-            check_same_thread=False,
-            timeout=5.0,
-        )
+        conn = sqlite3.connect(db_path, check_same_thread=False, timeout=5.0)
     except sqlite3.Error as exc:
         raise DatabaseError(f"Cannot open SQLite database at {db_path}: {exc}") from exc
 
-    # Rows behave like dicts -> dict(row) feeds straight into Pydantic models.
     conn.row_factory = sqlite3.Row
     for pragma in _PRAGMAS:
         conn.execute(pragma)
@@ -55,11 +50,6 @@ def _create_connection() -> sqlite3.Connection:
 
 @contextmanager
 def get_connection() -> Iterator[sqlite3.Connection]:
-    """Context manager for scripts, seeding and tests.
-
-    Commits on success, rolls back on any exception, and always closes.
-    Exceptions are re-raised — we never hide a failure.
-    """
     conn = _create_connection()
     try:
         yield conn
@@ -73,23 +63,26 @@ def get_connection() -> Iterator[sqlite3.Connection]:
 
 
 def get_db() -> Iterator[sqlite3.Connection]:
-    """FastAPI dependency. Usage:
-
-        @router.get("/factories")
-        def list_factories(db: sqlite3.Connection = Depends(get_db)):
-            ...
-    """
+    """FastAPI dependency."""
     with get_connection() as conn:
         yield conn
 
 
-def init_db() -> None:
-    """Ensure the database file exists and carries a metadata marker.
+def apply_schema() -> None:
+    """Execute schema.sql. Safe to call on every startup — every statement is
+    IF NOT EXISTS, so this never touches existing data."""
+    if not SCHEMA_PATH.exists():
+        raise DatabaseError(f"schema.sql not found at {SCHEMA_PATH}")
 
-    Phase 1 intentionally creates NO domain tables — the full schema arrives in
-    Phase 2. This only guarantees the file is present and writable so that
-    /api/health can report a truthful status on a clean checkout.
-    """
+    sql = SCHEMA_PATH.read_text(encoding="utf-8")
+    with get_connection() as conn:
+        conn.executescript(sql)
+    logger.info("Domain schema applied from %s", SCHEMA_PATH)
+
+
+def init_db() -> None:
+    """Ensure the database exists, the domain schema is applied, and the
+    metadata marker reflects the current schema version."""
     with get_connection() as conn:
         conn.execute(
             """
@@ -100,13 +93,21 @@ def init_db() -> None:
             )
             """
         )
+
+    apply_schema()
+
+    with get_connection() as conn:
         conn.execute(
             """
-            INSERT INTO circulo_meta (key, value) VALUES ('schema_version', '0')
-            ON CONFLICT(key) DO NOTHING
-            """
+            INSERT INTO circulo_meta (key, value, updated_at)
+            VALUES ('schema_version', ?, datetime('now'))
+            ON CONFLICT(key) DO UPDATE SET
+                value = excluded.value,
+                updated_at = excluded.updated_at
+            """,
+            (SCHEMA_VERSION,),
         )
-    logger.info("SQLite ready at %s", get_settings().resolved_database_path)
+    logger.info("SQLite ready at %s (schema_version=%s)", get_settings().resolved_database_path, SCHEMA_VERSION)
 
 
 def check_database() -> tuple[bool, str]:
@@ -116,8 +117,9 @@ def check_database() -> tuple[bool, str]:
             row = conn.execute(
                 "SELECT value FROM circulo_meta WHERE key = 'schema_version'"
             ).fetchone()
+            factory_count = conn.execute("SELECT COUNT(*) AS c FROM factories").fetchone()["c"]
         version = row["value"] if row else "unknown"
-        return True, f"sqlite ok (schema_version={version})"
-    except Exception as exc:  # health checks must degrade, not crash
+        return True, f"sqlite ok (schema_version={version}, factories={factory_count})"
+    except Exception as exc:
         logger.warning("Database health check failed: %s", exc)
         return False, f"{type(exc).__name__}: {exc}"

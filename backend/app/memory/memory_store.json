@@ -1,0 +1,30 @@
+[
+  {
+    "id": "mem_golden_rejection_001",
+    "factory_id": "cement_plant_x",
+    "factory_name": "Sagar Cement Works",
+    "material_id": "foundry_sand",
+    "material_name": "Foundry Sand",
+    "source_factory": "ABC Foundry",
+    "outcome": "rejected",
+    "reason": "moisture_above_limit",
+    "limit_percent": 10.0,
+    "observed_percent": 12.0,
+    "date": "2026-03-14T09:00:00+00:00",
+    "notes": "Prior shipment refused at intake — moisture exceeded contractual limit."
+  },
+  {
+    "id": "mem_golden_success_001",
+    "factory_id": "glass_mfr_z",
+    "factory_name": "Karavali Glass Industries",
+    "material_id": "processed_foundry_sand",
+    "material_name": "Processed Foundry Sand",
+    "source_factory": "Dakshina Processing Solutions",
+    "outcome": "accepted",
+    "reason": "within_spec",
+    "limit_percent": 8.0,
+    "observed_percent": 5.0,
+    "date": "2026-04-02T09:00:00+00:00",
+    "notes": "Prior processed-sand shipment accepted without issue."
+  }
+]
