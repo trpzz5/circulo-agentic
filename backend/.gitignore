@@ -1,0 +1,4 @@
+
+# ── Manifests (generated + uploaded — not source) ──────────────────────────
+data/manifests/*.pdf
+data/manifests/_registry.json
