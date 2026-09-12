@@ -1,0 +1,20 @@
+# ── CIRCULO backend — Phase 1 ───────────────────────────────────────────────
+# Pinned exactly. A hackathon is the worst possible time for a surprise
+# minor-version change in a transitive dependency.
+
+fastapi==0.115.6
+uvicorn[standard]==0.34.0        # [standard] brings httptools + uvloop (faster)
+pydantic==2.10.4
+pydantic-settings==2.7.0
+python-multipart==0.0.20         # required for PDF upload (Phase 3)
+python-dotenv==1.0.1
+
+# ── Dev / test ─────────────────────────────────────────────────────────────
+pytest==8.3.4
+pytest-asyncio==0.25.0
+httpx==0.28.1                    # FastAPI TestClient transport + async HTTP
+
+# ── Deferred (uncomment in the phase noted) ────────────────────────────────
+# pdfplumber==0.11.4             # Phase 3 — PDF text extraction
+# reportlab==4.2.5               # Phase 3 — generate the sample manifest PDF
+# anthropic==0.42.0              # Phase 3+ — OPTIONAL narration layer only
