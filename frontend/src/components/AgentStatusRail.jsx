@@ -1,208 +1,253 @@
-import "./AgentStatusRail.css";
+import './AgentStatusRail.css'
 
-const AGENT_META = {
-  dna: {
-    number: "01",
-    name: "DNA Agent",
-    shortName: "DNA",
-    description: "Understands the waste",
-    detail: "Extracts material properties from the manifest",
+const AGENTS = [
+  {
+    key: 'dna',
+    number: '01',
+    name: 'DNA Agent',
+    role: 'Material characterization',
   },
-  discovery: {
-    number: "02",
-    name: "Discovery Agent",
-    shortName: "DISCOVERY",
-    description: "Finds circular routes",
-    detail: "Searches buyers, processors and multi-hop pathways",
+  {
+    key: 'discovery',
+    number: '02',
+    name: 'Discovery Agent',
+    role: 'Industrial route discovery',
   },
-  impact: {
-    number: "03",
-    name: "Impact Agent",
-    shortName: "IMPACT",
-    description: "Measures route impact",
-    detail: "Evaluates ecosystem value and environmental impact",
+  {
+    key: 'impact',
+    number: '03',
+    name: 'Impact Agent',
+    role: 'Economic + environmental scoring',
   },
-  decision: {
-    number: "04",
-    name: "Decision Agent",
-    shortName: "DECISION",
-    description: "Selects the best route",
-    detail: "Compares viable routes using value and memory",
+  {
+    key: 'decision',
+    number: '04',
+    name: 'Decision Agent',
+    role: 'Route selection',
   },
-};
-
-const AGENT_ORDER = ["dna", "discovery", "impact", "decision"];
-
-function normalizeKey(agent) {
-  const value = String(
-    agent?.id ??
-    agent?.name ??
-    agent?.agent ??
-    agent?.type ??
-    ""
-  ).toLowerCase();
-
-  if (value.includes("dna")) return "dna";
-  if (value.includes("discovery")) return "discovery";
-  if (value.includes("impact")) return "impact";
-  if (value.includes("decision")) return "decision";
-
-  return null;
-}
-
-function normalizeStatus(agent) {
-  const value = String(
-    agent?.status ??
-    agent?.state ??
-    agent?.phase ??
-    "WAITING"
-  ).toUpperCase();
-
-  if (value.includes("RUN")) return "RUNNING";
-  if (value.includes("COMPLETE") || value.includes("DONE")) {
-    return "COMPLETE";
-  }
-  if (value.includes("FAIL") || value.includes("ERROR")) {
-    return "FAILED";
-  }
-  if (value.includes("SKIP")) return "SKIPPED";
-
-  return "WAITING";
-}
+]
 
 function getStatusLabel(status) {
   switch (status) {
-    case "RUNNING":
-      return "PROCESSING";
-    case "COMPLETE":
-      return "COMPLETE";
-    case "FAILED":
-      return "FAILED";
-    case "SKIPPED":
-      return "SKIPPED";
+    case 'complete':
+      return 'COMPLETE'
+    case 'running':
+      return 'RUNNING'
+    case 'failed':
+      return 'FAILED'
+    case 'pending':
+      return 'QUEUED'
     default:
-      return "STANDBY";
+      return 'IDLE'
   }
 }
 
-function getStatusMessage(status, agent) {
-  if (agent?.message) return agent.message;
-  if (agent?.detail) return agent.detail;
-
-  switch (status) {
-    case "RUNNING":
-      return "Agent is processing...";
-    case "COMPLETE":
-      return "Execution complete";
-    case "FAILED":
-      return "Agent execution failed";
-    case "SKIPPED":
-      return "Waiting for upstream agent";
-    default:
-      return "Awaiting pipeline execution";
-  }
+function getStatusClass(status) {
+  return `agent-status-rail__stage--${
+    status || 'idle'
+  }`
 }
 
-export default function AgentStatusRail({ agents = [] }) {
-  const agentMap = {};
+function getPipelineState(agents) {
+  const statuses = AGENTS.map(
+    ({ key }) => agents?.[key]?.status || 'idle'
+  )
 
-  if (Array.isArray(agents)) {
-    agents.forEach((agent) => {
-      const key = normalizeKey(agent);
-
-      if (key) {
-        agentMap[key] = agent;
-      }
-    });
-  } else if (agents && typeof agents === "object") {
-    Object.entries(agents).forEach(([key, value]) => {
-      const normalizedKey = normalizeKey({
-        ...(value || {}),
-        name: value?.name || key,
-      });
-
-      if (normalizedKey) {
-        agentMap[normalizedKey] = value;
-      }
-    });
+  if (statuses.includes('failed')) {
+    return 'failed'
   }
+
+  if (statuses.includes('running')) {
+    return 'running'
+  }
+
+  if (
+    statuses.every(
+      (status) => status === 'complete'
+    )
+  ) {
+    return 'complete'
+  }
+
+  if (
+    statuses.some(
+      (status) =>
+        status === 'complete' ||
+        status === 'pending'
+    )
+  ) {
+    return 'running'
+  }
+
+  return 'idle'
+}
+
+function getCompletedCount(agents) {
+  return AGENTS.filter(
+    ({ key }) =>
+      agents?.[key]?.status === 'complete'
+  ).length
+}
+
+export default function AgentStatusRail({
+  agents = {},
+}) {
+  const completedCount =
+    getCompletedCount(agents)
+
+  const pipelineState =
+    getPipelineState(agents)
+
+  const progress =
+    (completedCount / AGENTS.length) * 100
 
   return (
-    <section className="agent-pipeline panel">
-      <div className="agent-pipeline__header">
-        <div>
-          <div className="agent-pipeline__eyebrow">
-            Autonomous Pipeline
+    <section className="agent-status-rail panel">
+      <header className="agent-status-rail__header">
+        <div className="agent-status-rail__heading">
+          <div className="agent-status-rail__eyebrow label-caps">
+            Agent Orchestration
           </div>
 
-          <h2 className="agent-pipeline__title">
-            Agent Command Chain
+          <h2 className="agent-status-rail__title">
+            Autonomous execution
           </h2>
-
-          <p className="agent-pipeline__subtitle">
-            Four deterministic agents working in sequence
-          </p>
         </div>
 
-        <div className="agent-pipeline__counter">
-          <span className="agent-pipeline__counter-dot" />
-          <span>4 AGENTS</span>
+        <div
+          className={`agent-status-rail__progress-status agent-status-rail__progress-status--${pipelineState}`}
+        >
+          <span className="agent-status-rail__progress-count mono">
+            {String(completedCount).padStart(2, '0')}
+            <span className="agent-status-rail__progress-divider">
+              /
+            </span>
+            {String(AGENTS.length).padStart(2, '0')}
+          </span>
+
+          <span className="agent-status-rail__progress-label mono">
+            {pipelineState === 'complete'
+              ? 'COMPLETE'
+              : pipelineState === 'failed'
+                ? 'FAILED'
+                : pipelineState === 'running'
+                  ? 'RUNNING'
+                  : 'STANDBY'}
+          </span>
         </div>
+      </header>
+
+      <div className="agent-status-rail__progress-track">
+        <span
+          className="agent-status-rail__progress-fill"
+          style={{ width: `${progress}%` }}
+        />
       </div>
 
-      <div className="agent-pipeline__track">
-        {AGENT_ORDER.map((key, index) => {
-          const meta = AGENT_META[key];
-          const agent = agentMap[key];
+      <div className="agent-status-rail__flow">
+        {AGENTS.map(
+          (
+            {
+              key,
+              number,
+              name,
+              role,
+            },
+            index
+          ) => {
+            const agent = agents?.[key] || {}
 
-          const status = normalizeStatus(agent);
-          const statusLabel = getStatusLabel(status);
-          const message = getStatusMessage(status, agent);
+            const status =
+              agent.status || 'idle'
 
-          return (
-            <div
-              className={`agent-card agent-card--${status.toLowerCase()}`}
-              key={key}
-            >
-              <div className="agent-card__top">
-                <div className="agent-card__number">
-                  {meta.number}
-                </div>
+            const statusLabel =
+              getStatusLabel(status)
 
-                <div className="agent-card__status">
-                  <span className="agent-card__status-dot" />
-                  {statusLabel}
-                </div>
+            const isLast =
+              index === AGENTS.length - 1
+
+            return (
+              <div
+                className="agent-status-rail__flow-item"
+                key={key}
+              >
+                <article
+                  className={`agent-status-rail__stage ${getStatusClass(
+                    status
+                  )}`}
+                >
+                  <div className="agent-status-rail__stage-top">
+                    <span className="agent-status-rail__stage-number mono">
+                      {number}
+                    </span>
+
+                    <span className="agent-status-rail__stage-status mono">
+                      <span className="agent-status-rail__status-dot" />
+                      {statusLabel}
+                    </span>
+                  </div>
+
+                  <div className="agent-status-rail__stage-body">
+                    <div className="agent-status-rail__stage-name">
+                      {name}
+                    </div>
+
+                    <div className="agent-status-rail__stage-role">
+                      {role}
+                    </div>
+                  </div>
+
+                  <div className="agent-status-rail__stage-divider" />
+
+                  <div className="agent-status-rail__stage-activity">
+                    <span className="agent-status-rail__activity-label label-caps">
+                      CURRENT ACTIVITY
+                    </span>
+
+                    <span className="agent-status-rail__activity-value">
+                      {agent.activity ||
+                        statusLabel}
+                    </span>
+                  </div>
+
+                  {agent.note && (
+                    <div className="agent-status-rail__stage-note">
+                      {agent.note}
+                    </div>
+                  )}
+                </article>
+
+                {!isLast && (
+                  <div className="agent-status-rail__connector">
+                    <span className="agent-status-rail__connector-line" />
+                    <span className="agent-status-rail__connector-arrow">
+                      →
+                    </span>
+                  </div>
+                )}
               </div>
-
-              <div className="agent-card__body">
-                <div className="agent-card__code">
-                  {meta.shortName}
-                </div>
-
-                <h3 className="agent-card__name">
-                  {meta.name}
-                </h3>
-
-                <p className="agent-card__description">
-                  {meta.description}
-                </p>
-              </div>
-
-              <div className="agent-card__footer">
-                <span>{message}</span>
-              </div>
-
-              {index < AGENT_ORDER.length - 1 && (
-                <div className="agent-connector">
-                  <span className="agent-connector__line" />
-                  <span className="agent-connector__arrow">→</span>
-                </div>
-              )}
-            </div>
-          );
-        })}
+            )
+          }
+        )}
       </div>
+
+      <footer className="agent-status-rail__footer">
+        <span className="agent-status-rail__footer-dot" />
+
+        <span className="mono">
+          {pipelineState === 'complete'
+            ? 'PIPELINE EXECUTION COMPLETE'
+            : pipelineState === 'failed'
+              ? 'PIPELINE EXECUTION FAILED'
+              : pipelineState === 'running'
+                ? 'PIPELINE EXECUTION IN PROGRESS'
+                : 'PIPELINE READY'}
+        </span>
+
+        <span className="agent-status-rail__footer-path mono">
+          DNA → DISCOVERY → IMPACT → DECISION
+        </span>
+      </footer>
     </section>
-  );
+  )
 }

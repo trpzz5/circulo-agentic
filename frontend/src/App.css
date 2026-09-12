@@ -1,198 +1,358 @@
+/* =========================================================
+   CIRCULO APP SHELL
+   ========================================================= */
+
 .app-layout {
+  display: flex;
+  width: 100%;
   min-height: 100vh;
   background: var(--bg-void);
 }
 
 .app-shell {
-  min-height: 100vh;
-
-  margin-left: 250px;
-
-  display: flex;
-  flex-direction: column;
-
-  padding: 24px 28px 32px;
-
-  gap: 18px;
-
-  max-width: none;
+  width: calc(100% - var(--sidebar-width));
+  min-width: 0;
+  margin-left: var(--sidebar-width);
+  padding: 0 28px 48px;
 }
 
-.app-header {
-  min-height: 74px;
+/* =========================================================
+   HEADER
+   ========================================================= */
 
+.app-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  padding-bottom: 16px;
-
+  gap: 24px;
+  min-height: 92px;
+  padding: 22px 0 20px;
   border-bottom: 1px solid var(--border-subtle);
-
-  scroll-margin-top: 24px;
 }
 
 .app-header__identity {
-  display: flex;
-  flex-direction: column;
+  min-width: 0;
 }
 
 .app-header__eyebrow {
-  margin-bottom: 5px;
-
-  color: var(--accent-amber);
-
+  margin-bottom: 7px;
+  color: var(--text-muted);
   font-size: 9px;
-  font-weight: 700;
-
-  letter-spacing: 0.14em;
+  line-height: 1;
+  letter-spacing: 0.13em;
 }
 
 .app-header__title {
+  overflow: hidden;
   color: var(--text-primary);
-
-  font-family: var(--mono-font);
-
-  font-size: 22px;
-  font-weight: 700;
-
-  letter-spacing: 0.04em;
+  font-size: 24px;
+  line-height: 1.15;
+  font-weight: 680;
+  letter-spacing: -0.03em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .app-header__tagline {
-  margin-top: 4px;
+  margin-top: 6px;
+  color: var(--text-secondary);
+  font-size: 8px;
 }
+
+/* =========================================================
+   SECTION ANCHOR
+   ========================================================= */
+
+.app-section-anchor {
+  scroll-margin-top: 20px;
+}
+
+/* =========================================================
+   MAIN COMMAND CENTER
+   ========================================================= */
 
 .app-main {
   display: grid;
-
-  grid-template-columns: minmax(0, 1.6fr) minmax(340px, 1fr);
-
+  grid-template-columns: 1fr;
   gap: 18px;
-
-  min-height: 560px;
+  width: 100%;
+  margin-top: 18px;
+  align-items: start;
 }
 
-.app-main__left {
-  min-width: 0;
+/* =========================================================
+   ANALYSIS INPUT
+   ========================================================= */
 
+.app-analysis-input {
+  width: 100%;
+  min-width: 0;
+}
+
+/* =========================================================
+   AGENT ORCHESTRATION
+   ========================================================= */
+
+.app-orchestration {
+  width: 100%;
+  min-width: 0;
+}
+
+.app-orchestration .agent-status-rail {
+  width: 100%;
+  max-width: none;
+}
+
+/* =========================================================
+   LIVE AGENT ACTIVITY
+   FULL WIDTH
+   ========================================================= */
+
+.app-live-activity {
+  width: 100%;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-
-  gap: 16px;
+  gap: 18px;
 }
 
-.app-main__right {
+/*
+ * ActivityTimeline itself should occupy the complete
+ * available dashboard width.
+ */
+
+.app-live-activity .activity-timeline {
+  width: 100%;
+  max-width: none;
+}
+
+/* =========================================================
+   DECISION INTELLIGENCE
+   FULL WIDTH
+   ========================================================= */
+
+.app-decision {
+  width: 100%;
   min-width: 0;
-  min-height: 0;
+}
 
+.app-decision .decision-summary {
+  width: 100%;
+  max-width: none;
+}
+
+/* =========================================================
+   GENERIC PANEL
+   ========================================================= */
+
+.panel {
+  width: 100%;
+  min-width: 0;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+}
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.app-error {
   display: flex;
-
-  scroll-margin-top: 24px;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+  background: rgba(238, 95, 95, 0.05);
+  border: 1px solid rgba(238, 95, 95, 0.3);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-size: 11px;
+  line-height: 1.5;
 }
 
-.app-main__right > * {
-  flex: 1;
+.app-error__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--accent-red);
+  font-size: 9px;
+  letter-spacing: 0.08em;
 }
+
+.app-error__dismiss {
+  padding: 5px 8px;
+  background: transparent;
+  border: 1px solid rgba(238, 95, 95, 0.3);
+  border-radius: 4px;
+  color: var(--accent-red);
+  font-family: var(--mono-font);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+}
+
+.app-error__dismiss:hover {
+  background: rgba(238, 95, 95, 0.08);
+}
+
+.app-error__hint {
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+/* =========================================================
+   GRAPH ROW
+   ========================================================= */
 
 .app-graph-row {
   display: grid;
-
   grid-template-columns:
-    minmax(0, 1.6fr)
-    minmax(340px, 1fr);
-
+    minmax(0, 1.55fr)
+    minmax(320px, 0.7fr);
   gap: 18px;
-
-  min-height: 420px;
+  width: 100%;
+  margin-top: 18px;
 }
 
 .app-graph-container,
 .app-simulator-container {
   min-width: 0;
-
-  scroll-margin-top: 24px;
+  width: 100%;
 }
 
-.app-section-anchor {
-  height: 0;
+/* =========================================================
+   MEMORY
+   ========================================================= */
 
-  scroll-margin-top: 24px;
+.app-memory-row {
+  width: 100%;
+  min-width: 0;
+  margin-top: 18px;
 }
 
-.app-error {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+/* =========================================================
+   FACTORIES
+   ========================================================= */
 
-  background: rgba(239, 74, 92, 0.08);
-
-  border: 1px solid rgba(239, 74, 92, 0.5);
-
-  color: var(--accent-red);
-
-  padding: 11px 14px;
-
-  border-radius: 6px;
-
-  font-size: 12px;
+.app-factories-row {
+  width: 100%;
+  min-width: 0;
+  margin-top: 18px;
 }
 
-.app-error__label {
-  font-size: 9px;
-  font-weight: 800;
+/* =========================================================
+   LARGE TABLET
+   ========================================================= */
 
-  letter-spacing: 0.1em;
-}
-
-@media (max-width: 1100px) {
-  .app-main {
-    grid-template-columns: 1fr;
-  }
-
-  .app-main__right {
-    min-height: 420px;
+@media (max-width: 1180px) {
+  .app-shell {
+    width: calc(100% - 220px);
+    margin-left: 220px;
+    padding-left: 22px;
+    padding-right: 22px;
   }
 
   .app-graph-row {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      minmax(0, 1.35fr)
+      minmax(300px, 0.7fr);
   }
 }
+
+/* =========================================================
+   TABLET
+   ========================================================= */
 
 @media (max-width: 900px) {
   .app-shell {
+    width: 100%;
     margin-left: 0;
-
-    padding: 18px;
+    padding: 0 18px 36px;
   }
 
   .app-header {
-    min-height: auto;
-
-    align-items: flex-start;
-
-    gap: 18px;
+    min-height: 82px;
   }
 
   .app-header__title {
-    font-size: 18px;
-  }
-}
-
-@media (max-width: 600px) {
-  .app-shell {
-    padding: 14px;
-  }
-
-  .app-header {
-    flex-direction: column;
+    font-size: 21px;
   }
 
   .app-main {
-    gap: 14px;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .app-analysis-input,
+  .app-orchestration,
+  .app-live-activity,
+  .app-decision {
+    width: 100%;
   }
 
   .app-graph-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+  .app-shell {
+    padding: 0 12px 28px;
+  }
+
+  .app-header {
+    align-items: flex-start;
+    flex-direction: column;
     gap: 14px;
+    padding-top: 17px;
+    padding-bottom: 16px;
+  }
+
+  .app-header__title {
+    font-size: 19px;
+  }
+
+  .app-header__tagline {
+    font-size: 7px;
+  }
+
+  .app-main {
+    margin-top: 12px;
+    gap: 12px;
+  }
+
+  .app-live-activity {
+    gap: 12px;
+  }
+
+  .app-graph-row {
+    margin-top: 12px;
+    gap: 12px;
+  }
+
+  .app-memory-row,
+  .app-factories-row {
+    margin-top: 12px;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .app-shell *,
+  .app-shell *::before,
+  .app-shell *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
 }

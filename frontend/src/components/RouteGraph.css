@@ -1,407 +1,696 @@
-/* ==========================================================================
-   CIRCULO — INDUSTRIAL NETWORK
-   ========================================================================== */
-
 .route-graph {
-  position: relative;
-
-  display: flex;
-  flex-direction: column;
-
-  min-height: 0;
-
+  width: 100%;
+  min-width: 0;
   overflow: hidden;
-
-  background: var(--bg-panel);
-  border: 1px solid var(--border-subtle);
-  border-radius: 8px;
 }
 
-/* ==========================================================================
-   EMPTY STATE
-   ========================================================================== */
-
-.route-graph--empty {
-  align-items: center;
-  justify-content: center;
-
-  gap: 7px;
-
-  padding: 24px;
-
-  text-align: center;
-}
-
-.route-graph__empty-mark {
-  margin-bottom: 4px;
-
-  color: var(--accent-slate);
-
-  font-family: var(--mono-font);
-  font-size: 30px;
-
-  opacity: 0.45;
-}
-
-.route-graph__placeholder {
-  max-width: 280px;
-
-  margin: 0;
-
-  color: var(--text-muted);
-
-  font-size: 11px;
-  line-height: 1.5;
-}
-
-.route-graph__empty-status {
-  margin-top: 5px;
-
-  color: var(--text-muted);
-
-  font-size: 8px;
-  letter-spacing: 0.1em;
-}
-
-/* ==========================================================================
+/* =========================================================
    HEADER
-   ========================================================================== */
+   ========================================================= */
 
 .route-graph__header {
-  min-height: 48px;
-
   display: flex;
   justify-content: space-between;
-  align-items: center;
-
-  gap: 16px;
-
-  padding: 0 14px;
-
-  border-bottom: 1px solid var(--border-subtle);
-
-  background: rgba(255, 255, 255, 0.012);
+  align-items: stretch;
+  min-height: 105px;
+  border-bottom: 1px solid var(--line);
 }
 
-.route-graph__title {
+.route-graph__title-block {
+  padding: 18px 0 18px 0;
+}
+
+.route-graph__title-line {
   display: flex;
   align-items: center;
-  gap: 12px;
-
-  min-width: 0;
+  gap: 15px;
+  margin-bottom: 8px;
 }
 
 .route-graph__status {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-
-  color: var(--accent-green);
-
-  font-family: var(--mono-font);
+  gap: 7px;
+  color: #43d982;
+  font-family: var(--font-mono);
   font-size: 8px;
-  font-weight: 700;
-  letter-spacing: 0.07em;
-
-  white-space: nowrap;
+  letter-spacing: 0.08em;
 }
 
 .route-graph__status-dot {
-  width: 5px;
-  height: 5px;
-
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-
-  background: var(--accent-green);
-
-  box-shadow:
-    0 0 8px rgba(47, 217, 122, 0.7);
-
-  animation: route-status-pulse 1.8s ease-in-out infinite;
+  background: #43d982;
+  box-shadow: 0 0 9px rgba(67, 217, 130, 0.7);
 }
 
-/* ==========================================================================
-   HEADER META
-   ========================================================================== */
+.route-graph__heading {
+  margin: 0;
+  font-size: 25px;
+  line-height: 1.1;
+}
 
-.route-graph__meta {
+.route-graph__subheading {
+  margin: 9px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.route-graph__header-meta {
+  display: grid;
+  grid-template-columns: 110px 110px;
+  border-left: 1px solid var(--line);
+}
+
+.route-graph__meta-stat {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding: 18px;
+  border-right: 1px solid var(--line);
+}
+
+.route-graph__meta-stat strong {
+  font-size: 18px;
+}
+
+/* =========================================================
+   GOLDEN PATH COMMAND
+   ========================================================= */
+
+.route-graph__command {
+  margin-top: 18px;
+  border: 1px solid rgba(67, 217, 130, 0.24);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(67, 217, 130, 0.055),
+      rgba(67, 217, 130, 0.012)
+    );
+}
+
+.route-graph__command-header {
   display: flex;
   align-items: center;
-  gap: 16px;
+  justify-content: space-between;
+  min-height: 48px;
+  padding: 0 16px;
+  border-bottom: 1px solid rgba(67, 217, 130, 0.15);
+}
 
-  color: var(--text-muted);
+.route-graph__command-header > div {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
 
+.route-graph__command-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #6ca37f;
+  font-family: var(--font-mono);
   font-size: 8px;
+  letter-spacing: 0.06em;
+}
 
+.route-graph__command-state-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #43d982;
+  box-shadow: 0 0 7px rgba(67, 217, 130, 0.65);
+}
+
+.route-graph__command-id {
+  color: #5d7767;
+  font-size: 8px;
+}
+
+.route-graph__route-chain {
+  display: flex;
+  align-items: center;
+  padding: 22px 18px;
+  overflow-x: auto;
+}
+
+.route-graph__route-step {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.route-graph__route-index {
+  margin-right: 7px;
+  color: #68737d;
+  font-size: 9px;
+}
+
+.route-graph__route-dot {
+  width: 9px;
+  height: 9px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #43d982;
+  box-shadow:
+    0 0 0 3px rgba(67, 217, 130, 0.08),
+    0 0 11px rgba(67, 217, 130, 0.5);
+}
+
+.route-graph__route-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-left: 10px;
+  min-width: 150px;
+}
+
+.route-graph__route-copy span {
+  color: #5c8a6e;
+  font-size: 7px;
+}
+
+.route-graph__route-copy strong {
+  color: #e9eff2;
+  font-size: 12px;
   white-space: nowrap;
+}
+
+.route-graph__route-arrow {
+  margin: 0 24px;
+  color: #43d982;
+  font-size: 19px;
+  line-height: 1;
+}
+
+/* =========================================================
+   COMMAND METRICS
+   ========================================================= */
+
+.route-graph__command-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid rgba(67, 217, 130, 0.12);
+}
+
+.route-graph__command-metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 16px;
+  border-right: 1px solid rgba(67, 217, 130, 0.12);
+}
+
+.route-graph__command-metric:last-child {
+  border-right: 0;
+}
+
+.route-graph__command-metric strong {
+  color: #43d982;
+  font-size: 12px;
+}
+
+/* =========================================================
+   TOPOLOGY HEADER
+   ========================================================= */
+
+.route-graph__canvas-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 52px;
+  border-bottom: 1px solid var(--line);
 }
 
 .route-graph__legend {
   display: flex;
   align-items: center;
-  gap: 11px;
-
-  color: var(--text-muted);
-
-  font-family: var(--ui-font);
-  font-size: 8px;
-
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  gap: 18px;
 }
 
 .route-graph__legend-item {
   display: inline-flex;
   align-items: center;
+  gap: 7px;
+  color: #78848f;
+  font-size: 9px;
 }
 
-/* ==========================================================================
-   LEGEND DOTS
-   ========================================================================== */
-
 .route-graph__dot {
-  width: 6px;
-  height: 6px;
-
-  flex: 0 0 auto;
-
-  display: inline-block;
-
-  margin-right: 4px;
-
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
 }
 
 .route-graph__dot--source {
-  background: var(--accent-amber);
+  background: #f5a524;
+  box-shadow: 0 0 7px rgba(245, 165, 36, 0.5);
 }
 
 .route-graph__dot--processor {
-  background: var(--accent-blue);
+  background: #4a9df5;
+  box-shadow: 0 0 7px rgba(74, 157, 245, 0.5);
 }
 
 .route-graph__dot--recommended {
-  background: var(--accent-green);
-
-  box-shadow:
-    0 0 6px rgba(47, 217, 122, 0.45);
+  background: #43d982;
+  box-shadow: 0 0 7px rgba(67, 217, 130, 0.5);
 }
 
 .route-graph__dot--rejected {
-  background: var(--accent-red);
+  background: #ef4a5c;
+  box-shadow: 0 0 7px rgba(239, 74, 92, 0.5);
 }
 
-/* ==========================================================================
+/* =========================================================
    CANVAS
-   ========================================================================== */
+   ========================================================= */
 
 .route-graph__canvas {
   position: relative;
-
-  flex: 1;
-
-  min-height: 340px;
-
+  height: 570px;
+  min-height: 570px;
+  overflow: hidden;
   background:
     radial-gradient(
-      circle at 50% 50%,
-      rgba(74, 157, 245, 0.025),
+      circle at 50% 40%,
+      rgba(40, 55, 63, 0.09),
       transparent 55%
     );
 }
 
 .route-graph__canvas .react-flow {
+  position: absolute;
+  inset: 0;
+}
+
+/*
+ * React Flow stacking:
+ *
+ * Background
+ *    ↓
+ * Edges
+ *    ↓
+ * Nodes
+ */
+
+.route-graph__canvas
+  .react-flow__background {
+  z-index: 0;
+}
+
+.route-graph__canvas
+  .react-flow__edges {
+  z-index: 5 !important;
+}
+
+.route-graph__canvas
+  .react-flow__edge {
+  z-index: 5 !important;
+}
+
+.route-graph__canvas
+  .react-flow__nodes {
+  z-index: 10 !important;
+}
+
+.route-graph__canvas
+  .react-flow__node {
+  z-index: 10 !important;
+}
+
+/* =========================================================
+   INDUSTRIAL NODE
+   ========================================================= */
+
+.route-graph__canvas
+  .react-flow__node-industrial {
+  width: 220px;
+  padding: 0;
+  border: 0;
   background: transparent;
+  box-shadow: none;
 }
 
-.route-graph__canvas .react-flow__pane {
-  cursor: default;
+.industrial-node {
+  position: relative;
+  width: 220px;
+  min-height: 82px;
+  box-sizing: border-box;
+  padding: 13px 15px;
+
+  background: #11191f;
+
+  border: 1px solid #2b3740;
+
+  border-left-width: 2px;
+
+  box-shadow:
+    0 9px 25px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.018);
 }
 
-.route-graph__canvas .react-flow__background {
-  opacity: 0.55;
+.industrial-node--source {
+  border-left-color: #f5a524;
 }
 
-/* ==========================================================================
-   REACT FLOW CONTROLS
-   ========================================================================== */
+.industrial-node--processor {
+  border-left-color: #4a9df5;
+}
 
-.route-graph__canvas .react-flow__controls {
-  left: 12px;
-  bottom: 12px;
+.industrial-node--destination {
+  border-color: rgba(67, 217, 130, 0.24);
+  border-left-color: #43d982;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(67, 217, 130, 0.075),
+      #11191f 68%
+    );
+}
+
+.industrial-node__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 9px;
+}
+
+.industrial-node__role {
+  color: #697580;
+  font-family: var(--font-mono);
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+
+.industrial-node--source
+  .industrial-node__role {
+  color: #b28639;
+}
+
+.industrial-node--processor
+  .industrial-node__role {
+  color: #5686b7;
+}
+
+.industrial-node--destination
+  .industrial-node__role {
+  color: #4fa675;
+}
+
+.industrial-node__signal {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #68747e;
+}
+
+.industrial-node--source
+  .industrial-node__signal {
+  background: #f5a524;
+  box-shadow: 0 0 8px rgba(245, 165, 36, 0.8);
+}
+
+.industrial-node--processor
+  .industrial-node__signal {
+  background: #4a9df5;
+  box-shadow: 0 0 8px rgba(74, 157, 245, 0.8);
+}
+
+.industrial-node--destination
+  .industrial-node__signal {
+  background: #43d982;
+  box-shadow: 0 0 9px rgba(67, 217, 130, 0.85);
+}
+
+.industrial-node__name {
+  color: #edf2f4;
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 650;
+}
+
+.industrial-node__id {
+  margin-top: 6px;
+  color: #58656f;
+  font-family: var(--font-mono);
+  font-size: 7px;
+}
+
+/* =========================================================
+   HANDLES
+   ========================================================= */
+
+.industrial-node__handle {
+  width: 8px !important;
+  height: 8px !important;
+  min-width: 8px !important;
+  min-height: 8px !important;
+
+  border: 1px solid #0a1014 !important;
+
+  opacity: 1 !important;
+}
+
+.industrial-node__handle--left {
+  background: #68747e !important;
+}
+
+.industrial-node__handle--right {
+  background: #68747e !important;
+}
+
+.industrial-node--source
+  .industrial-node__handle--right {
+  background: #f5a524 !important;
+}
+
+.industrial-node--processor
+  .industrial-node__handle--left,
+.industrial-node--processor
+  .industrial-node__handle--right {
+  background: #4a9df5 !important;
+}
+
+.industrial-node--destination
+  .industrial-node__handle--left {
+  background: #43d982 !important;
+}
+
+/* =========================================================
+   EDGES
+   ========================================================= */
+
+.route-graph__canvas
+  .react-flow__edge-path {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.route-graph__canvas
+  .react-flow__edge-text {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+}
+
+.route-graph__canvas
+  .react-flow__edge.animated
+  .react-flow__edge-path {
+  stroke-dasharray: 8 6;
+  animation:
+    route-flow 1.15s linear infinite;
+}
+
+@keyframes route-flow {
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+
+/* =========================================================
+   CONTROLS
+   ========================================================= */
+
+.route-graph__canvas
+  .react-flow__controls {
+  margin:
+    0
+    0
+    15px
+    14px;
+
+  border:
+    1px solid
+    #2a353d;
 
   box-shadow: none;
 }
 
-.route-graph__canvas .react-flow__controls-button {
-  width: 26px;
-  height: 26px;
+.route-graph__canvas
+  .react-flow__controls-button {
+  width: 34px;
+  height: 34px;
 
+  background: #10171c;
+
+  color: #9aa5ad;
+
+  border-color: #2a353d;
+}
+
+.route-graph__canvas
+  .react-flow__controls-button:hover {
+  background: #172127;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.route-graph__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  min-height: 45px;
+
+  border-top:
+    1px solid
+    var(--line);
+}
+
+.route-graph__footer-status {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  color: #43d982;
+
+  font-size: 8px;
+}
+
+.route-graph__footer-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #43d982;
+
+  box-shadow:
+    0 0 8px
+    rgba(67, 217, 130, 0.7);
+}
+
+/* =========================================================
+   EMPTY
+   ========================================================= */
+
+.route-graph--empty {
+  min-height: 520px;
+}
+
+.route-graph__empty-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.route-graph__empty-title {
+  margin: 7px 0 0;
+  font-size: 23px;
+}
+
+.route-graph__empty-body {
   display: flex;
   align-items: center;
   justify-content: center;
 
-  padding: 0;
+  min-height: 390px;
 
-  background: var(--bg-panel-raised);
+  flex-direction: column;
 
-  border: 1px solid var(--border-subtle);
-  border-bottom: 0;
-
-  color: var(--text-secondary);
-
-  transition:
-    color 150ms ease,
-    background 150ms ease,
-    border-color 150ms ease;
-}
-
-.route-graph__canvas .react-flow__controls-button:last-child {
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-.route-graph__canvas .react-flow__controls-button:hover {
-  background: var(--bg-panel);
-  border-color: var(--border-strong);
-  color: var(--text-primary);
-}
-
-.route-graph__canvas .react-flow__controls-button svg {
-  max-width: 12px;
-  max-height: 12px;
-}
-
-/* ==========================================================================
-   NODE PRESENTATION
-   ========================================================================== */
-
-.route-graph__canvas .react-flow__node {
-  font-family: var(--ui-font);
-}
-
-/*
- * Preserve node-specific styling coming from buildGraphElements.
- * These rules only add depth and interaction.
- */
-
-.route-graph__canvas .react-flow__node-default,
-.route-graph__canvas .react-flow__node-input,
-.route-graph__canvas .react-flow__node-output {
-  box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.22);
-
-  transition:
-    box-shadow 180ms ease,
-    transform 180ms ease;
-}
-
-.route-graph__canvas .react-flow__node:hover {
-  z-index: 10;
-}
-
-/* ==========================================================================
-   EDGES
-   ========================================================================== */
-
-.route-graph__canvas .react-flow__edge-path {
-  stroke-width: 1.5;
-}
-
-.route-graph__canvas .react-flow__edge-text {
-  font-family: var(--mono-font);
-  font-size: 8px;
-}
-
-.route-graph__canvas .react-flow__edge-textbg {
-  fill: var(--bg-panel);
-}
-
-/* ==========================================================================
-   FOOTER
-   ========================================================================== */
-
-.route-graph__footer {
-  min-height: 34px;
-
-  display: flex;
-  align-items: center;
   gap: 10px;
 
-  padding: 0 14px;
+  text-align: center;
 
-  border-top: 1px solid var(--border-subtle);
-
-  background: rgba(255, 255, 255, 0.012);
-
-  overflow: hidden;
+  color: var(--muted);
 }
 
-.route-graph__footer .label-caps {
-  flex: 0 0 auto;
-
-  font-size: 8px;
+.route-graph__empty-body p {
+  max-width: 420px;
+  margin: 0;
 }
 
-.route-graph__footer-route {
-  min-width: 0;
-
-  color: var(--accent-green);
-
-  font-size: 9px;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* ==========================================================================
-   ANIMATION
-   ========================================================================== */
-
-@keyframes route-status-pulse {
-  0%,
-  100% {
-    opacity: 0.45;
-    transform: scale(0.9);
-  }
-
-  50% {
-    opacity: 1;
-    transform: scale(1.15);
-  }
-}
-
-/* ==========================================================================
+/* =========================================================
    RESPONSIVE
-   ========================================================================== */
+   ========================================================= */
 
-@media (max-width: 900px) {
+@media (max-width: 760px) {
   .route-graph__header {
+    flex-direction: column;
+  }
+
+  .route-graph__header-meta {
+    grid-template-columns:
+      repeat(2, 1fr);
+
+    border-left: 0;
+
+    border-top:
+      1px solid
+      var(--line);
+  }
+
+  .route-graph__canvas-header {
     align-items: flex-start;
     flex-direction: column;
-
-    padding-top: 10px;
-    padding-bottom: 10px;
+    gap: 10px;
+    padding: 13px 0;
   }
 
-  .route-graph__meta {
-    width: 100%;
-
-    justify-content: space-between;
+  .route-graph__legend {
+    flex-wrap: wrap;
   }
 
   .route-graph__canvas {
-    min-height: 360px;
-  }
-}
-
-@media (max-width: 650px) {
-  .route-graph__legend {
-    gap: 7px;
+    height: 500px;
+    min-height: 500px;
   }
 
-  .route-graph__legend-item:nth-child(3),
-  .route-graph__legend-item:nth-child(4) {
-    display: none;
+  .route-graph__command-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 16px;
+  }
+
+  .route-graph__route-chain {
+    padding: 18px;
+  }
+
+  .route-graph__command-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .route-graph__command-metric {
+    border-right: 0;
+    border-bottom:
+      1px solid
+      rgba(67, 217, 130, 0.12);
+  }
+
+  .route-graph__command-metric:last-child {
+    border-bottom: 0;
   }
 }
