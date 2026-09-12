@@ -1,0 +1,191 @@
+{
+  "manifest_546dfafe8e": {
+    "manifest_id": "manifest_546dfafe8e",
+    "filename": "golden_path_manifest.pdf",
+    "raw_text": "WASTE MANIFEST\nManifest No: WM-2026-0417\nSource Factory: ABC Foundry\nLocation: Mangalore\nMaterial: Foundry Sand\nQuantity: 20 tonnes/month\nMoisture: 12%\nPurity: 94%\nEmbedded Carbon: 1200 kg CO2e\nDeclared by: Plant Operations, ABC Foundry",
+    "character_count": 236,
+    "page_count": 1,
+    "pdf_path": "/home/manvith/circulo-agentic/data/manifests/upload_golden_path_manifest.pdf",
+    "uploaded_at": "2026-09-12T09:27:50.915658+00:00"
+  },
+  "manifest_c9f7d53a53": {
+    "manifest_id": "manifest_c9f7d53a53",
+    "filename": "scrap_metal_manifest.pdf",
+    "raw_text": "WASTE MANIFEST\nManifest No: WM-2026-0512\nSource Factory: Konkan Steel Works\nLocation: Udupi\nMaterial: Scrap Metal\nQuantity: 35 tonnes/month\nMoisture: 3%\nPurity: 97%\nEmbedded Carbon: 400 kg CO2e\nDeclared by: Plant Operations, Konkan Steel Works",
+    "character_count": 243,
+    "page_count": 1,
+    "pdf_path": "/home/manvith/circulo-agentic/data/manifests/upload_scrap_metal_manifest.pdf",
+    "uploaded_at": "2026-09-12T09:30:29.073684+00:00"
+  },
+  "manifest_0d0e8b66a9": {
+    "manifest_id": "manifest_0d0e8b66a9",
+    "filename": "golden_path_manifest.pdf",
+    "raw_text": "WASTE MANIFEST\nManifest No: WM-2026-0417\nSource Factory: ABC Foundry\nLocation: Mangalore\nMaterial: Foundry Sand\nQuantity: 20 tonnes/month\nMoisture: 12%\nPurity: 94%\nEmbedded Carbon: 1200 kg CO2e\nDeclared by: Plant Operations, ABC Foundry",
+    "character_count": 236,
+    "page_count": 1,
+    "pdf_path": "/home/manvith/circulo-agentic/data/manifests/upload_golden_path_manifest.pdf",
+    "uploaded_at": "2026-09-12T12:00:27.727976+00:00"
+  },
+  "manifest_dea4f26f71": {
+    "manifest_id": "manifest_dea4f26f71",
+    "filename": "AI_task1.pdf",
+    "raw_text": "",
+    "character_count": 0,
+    "page_count": 6,
+    "pdf_path": "/home/manvith/circulo-agentic/data/manifests/upload_AI_task1.pdf",
+    "uploaded_at": "2026-09-12T12:34:58.305978+00:00"
+  },
+  "manifest_0e3aa2cd82": {
+    "manifest_id": "manifest_0e3aa2cd82",
+    "filename": "AI_task1.pdf",
+    "raw_text": "",
+    "character_count": 0,
+    "page_count": 6,
+    "pdf_path": "/home/manvith/circulo-agentic/data/manifests/upload_AI_task1.pdf",
+    "uploaded_at": "2026-09-12T12:35:07.278514+00:00"
+  },
+  "manifest_0b52e0c152": {
+    "manifest_id": "manifest_0b52e0c152",
+    "filename": "AI_task1.pdf",
+    "raw_text": "",
+    "character_count": 0,
+    "page_count": 6,
+    "pdf_path": "/home/manvith/circulo-agentic/data/manifests/upload_AI_task1.pdf",
+    "uploaded_at": "2026-09-12T12:35:07.515577+00:00"
+  },
+  "manifest_e358a72160": {
+    "manifest_id": "manifest_e358a72160",
+    "filename": "AI_task1.pdf",
+    "raw_text": "",
+    "character_count": 0,
+    "page_count": 6,
+    "pdf_path": "/home/manvith/circulo-agentic/data/manifests/upload_AI_task1.pdf",
+    "uploaded_at": "2026-09-12T12:35:07.803719+00:00"
+  },
+  "manifest_6f2b1fcd62": {
+    "manifest_id": "manifest_6f2b1fcd62",
+    "filename": "AI_task1.pdf",
+    "raw_text": "",
+    "character_count": 0,
+    "page_count": 6,
+    "pdf_path": "/home/manvith/circulo-agentic/data/manifests/upload_AI_task1.pdf",
+    "uploaded_at": "2026-09-12T12:35:10.892366+00:00"
+  },
+  "manifest_d3abe74b0c": {
+    "manifest_id": "manifest_d3abe74b0c",
+    "filename": "AI_task1.pdf",
+    "raw_text": "",
+    "character_count": 0,
+    "page_count": 6,
+    "pdf_path": "/home/manvith/circulo-agentic/data/manifests/upload_AI_task1.pdf",
+    "uploaded_at": "2026-09-12T12:35:14.347200+00:00"
+  },
+  "manifest_9a234ea6cc": {
+    "manifest_id": "manifest_9a234ea6cc",
+    "filename": "AI_task1.pdf",
+    "raw_text": "",
+    "character_count": 0,
+    "page_count": 6,
+    "pdf_path": "/home/manvith/circulo-agentic/data/manifests/upload_AI_task1.pdf",
+    "uploaded_at": "2026-09-12T12:35:15.412043+00:00"
+  },
+  "manifest_971f6c9752": {
+    "manifest_id": "manifest_971f6c9752",
+    "filename": "AI_task1.pdf",
+    "raw_text": "",
+    "character_count": 0,
+    "page_count": 6,
+    "pdf_path": "/home/manvith/circulo-agentic/data/manifests/upload_AI_task1.pdf",
+    "uploaded_at": "2026-09-12T12:35:15.630584+00:00"
+  },
+  "manifest_6d9c022fda": {
+    "manifest_id": "manifest_6d9c022fda",
+    "filename": "AI_task1.pdf",
+    "raw_text": "",
+    "character_count": 0,
+    "page_count": 6,
+    "pdf_path": "/home/manvith/circulo-agentic/data/manifests/upload_AI_task1.pdf",
+    "uploaded_at": "2026-09-12T12:35:16.030355+00:00"
+  },
+  "manifest_5f5d28aff6": {
+    "manifest_id": "manifest_5f5d28aff6",
+    "filename": "AI_task1.pdf",
+    "raw_text": "",
+    "character_count": 0,
+    "page_count": 6,
+    "pdf_path": "/home/manvith/circulo-agentic/data/manifests/upload_AI_task1.pdf",
+    "uploaded_at": "2026-09-12T12:35:16.238043+00:00"
+  },
+  "manifest_cc8101ceb3": {
+    "manifest_id": "manifest_cc8101ceb3",
+    "filename": "test_manifest_plastic_scrap.pdf",
+    "raw_text": "Material: Plastic Scrap (HDPE)\nQuantity: 15 tonnes/month\nMoisture: 3%\nPurity: 95%\nLocation: Mangalore Industrial Estate\nSource Factory: Coastal Polymers Pvt Ltd",
+    "character_count": 160,
+    "page_count": 1,
+    "pdf_path": "/home/manvith/circulo-agentic/data/manifests/upload_test_manifest_plastic_scrap.pdf",
+    "uploaded_at": "2026-09-12T12:37:23.543690+00:00"
+  },
+  "manifest_5b3fa64027": {
+    "manifest_id": "manifest_5b3fa64027",
+    "filename": "test_manifest_plastic_scrap.pdf",
+    "raw_text": "Material: Plastic Scrap (HDPE)\nQuantity: 15 tonnes/month\nMoisture: 3%\nPurity: 95%\nLocation: Mangalore Industrial Estate\nSource Factory: Coastal Polymers Pvt Ltd",
+    "character_count": 160,
+    "page_count": 1,
+    "pdf_path": "/home/manvith/circulo-agentic/data/manifests/upload_test_manifest_plastic_scrap.pdf",
+    "uploaded_at": "2026-09-12T12:37:24.660989+00:00"
+  },
+  "manifest_14bb5c5ada": {
+    "manifest_id": "manifest_14bb5c5ada",
+    "filename": "test_manifest_plastic_scrap.pdf",
+    "raw_text": "Material: Plastic Scrap (HDPE)\nQuantity: 15 tonnes/month\nMoisture: 3%\nPurity: 95%\nLocation: Mangalore Industrial Estate\nSource Factory: Coastal Polymers Pvt Ltd",
+    "character_count": 160,
+    "page_count": 1,
+    "pdf_path": "/home/manvith/circulo-agentic/data/manifests/upload_test_manifest_plastic_scrap.pdf",
+    "uploaded_at": "2026-09-12T12:37:24.872318+00:00"
+  },
+  "manifest_77c8d0b51d": {
+    "manifest_id": "manifest_77c8d0b51d",
+    "filename": "test_manifest_plastic_scrap.pdf",
+    "raw_text": "Material: Plastic Scrap (HDPE)\nQuantity: 15 tonnes/month\nMoisture: 3%\nPurity: 95%\nLocation: Mangalore Industrial Estate\nSource Factory: Coastal Polymers Pvt Ltd",
+    "character_count": 160,
+    "page_count": 1,
+    "pdf_path": "/home/manvith/circulo-agentic/data/manifests/upload_test_manifest_plastic_scrap.pdf",
+    "uploaded_at": "2026-09-12T12:37:25.061370+00:00"
+  },
+  "manifest_1796e91f55": {
+    "manifest_id": "manifest_1796e91f55",
+    "filename": "test_manifest_plastic_scrap.pdf",
+    "raw_text": "Material: Plastic Scrap (HDPE)\nQuantity: 15 tonnes/month\nMoisture: 3%\nPurity: 95%\nLocation: Mangalore Industrial Estate\nSource Factory: Coastal Polymers Pvt Ltd",
+    "character_count": 160,
+    "page_count": 1,
+    "pdf_path": "/home/manvith/circulo-agentic/data/manifests/upload_test_manifest_plastic_scrap.pdf",
+    "uploaded_at": "2026-09-12T12:37:25.251700+00:00"
+  },
+  "manifest_d66fe8e94b": {
+    "manifest_id": "manifest_d66fe8e94b",
+    "filename": "test_manifest_plastic_scrap.pdf",
+    "raw_text": "Material: Plastic Scrap (HDPE)\nQuantity: 15 tonnes/month\nMoisture: 3%\nPurity: 95%\nLocation: Mangalore Industrial Estate\nSource Factory: Coastal Polymers Pvt Ltd",
+    "character_count": 160,
+    "page_count": 1,
+    "pdf_path": "/home/manvith/circulo-agentic/data/manifests/upload_test_manifest_plastic_scrap.pdf",
+    "uploaded_at": "2026-09-12T12:37:25.460054+00:00"
+  },
+  "manifest_a27b7af54f": {
+    "manifest_id": "manifest_a27b7af54f",
+    "filename": "test_manifest_plastic_scrap.pdf",
+    "raw_text": "Material: Plastic Scrap (HDPE)\nQuantity: 15 tonnes/month\nMoisture: 3%\nPurity: 95%\nLocation: Mangalore Industrial Estate\nSource Factory: Coastal Polymers Pvt Ltd",
+    "character_count": 160,
+    "page_count": 1,
+    "pdf_path": "/home/manvith/circulo-agentic/data/manifests/upload_test_manifest_plastic_scrap.pdf",
+    "uploaded_at": "2026-09-12T12:37:32.716158+00:00"
+  },
+  "manifest_a442bc0d04": {
+    "manifest_id": "manifest_a442bc0d04",
+    "filename": "test_manifest_plastic_scrap.pdf",
+    "raw_text": "Material: Plastic Scrap (HDPE)\nQuantity: 15 tonnes/month\nMoisture: 3%\nPurity: 95%\nLocation: Mangalore Industrial Estate\nSource Factory: Coastal Polymers Pvt Ltd",
+    "character_count": 160,
+    "page_count": 1,
+    "pdf_path": "/home/manvith/circulo-agentic/data/manifests/upload_test_manifest_plastic_scrap.pdf",
+    "uploaded_at": "2026-09-12T12:37:34.956159+00:00"
+  }
+}

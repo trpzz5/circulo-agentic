@@ -1,0 +1,109 @@
+.upload-panel {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.upload-panel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.upload-panel__tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.upload-panel__tabs button {
+  background: var(--bg-panel-raised);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 4px 10px;
+  font-size: 11px;
+  border-radius: 4px;
+}
+
+.upload-panel__tabs button.active {
+  color: var(--accent-amber);
+  border-color: var(--accent-amber);
+}
+
+.upload-panel__textarea {
+  background: var(--bg-void);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-family: var(--mono-font);
+  font-size: 13px;
+  padding: 12px;
+  min-height: 140px;
+  resize: vertical;
+}
+
+.upload-panel__file {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 6px;
+}
+
+.upload-panel__filename {
+  font-family: var(--mono-font);
+  font-size: 12px;
+  color: var(--accent-blue);
+}
+
+.upload-panel__footer {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.upload-panel__hops {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.upload-panel__hops select {
+  background: var(--bg-panel-raised);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.upload-panel__sample {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--text-secondary);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+}
+
+.upload-panel__sample:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+
+.upload-panel__run {
+  margin-left: auto;
+  background: var(--accent-amber);
+  border: none;
+  color: #1a1200;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.upload-panel__run:disabled {
+  background: var(--border-strong);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}

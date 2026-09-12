@@ -1,0 +1,76 @@
+.agent-rail {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.agent-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--accent-slate);
+  border-radius: 6px;
+  padding: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.agent-card__icon {
+  font-size: 18px;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+.agent-card__body { flex: 1; min-width: 0; }
+
+.agent-card__activity {
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 4px;
+  color: var(--text-primary);
+}
+
+.agent-card__note {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.agent-card__pill {
+  font-size: 10px;
+  font-family: var(--mono-font);
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ── Status-driven theming ─────────────────────────────────────────────── */
+.agent-card--waiting { border-left-color: var(--accent-slate); }
+
+.agent-card--running {
+  border-left-color: var(--accent-amber);
+  background: linear-gradient(90deg, rgba(245, 165, 36, 0.08), transparent);
+  animation: pulse-border 1.4s ease-in-out infinite;
+}
+.agent-card--running .agent-card__icon { color: var(--accent-amber); }
+.agent-card--running .agent-card__pill { color: var(--accent-amber); border-color: var(--accent-amber); }
+
+.agent-card--complete { border-left-color: var(--accent-green); }
+.agent-card--complete .agent-card__icon { color: var(--accent-green); }
+.agent-card--complete .agent-card__pill { color: var(--accent-green); border-color: var(--accent-green); }
+
+.agent-card--failed { border-left-color: var(--accent-red); }
+.agent-card--failed .agent-card__icon { color: var(--accent-red); }
+.agent-card--failed .agent-card__pill { color: var(--accent-red); border-color: var(--accent-red); }
+
+.agent-card--skipped { border-left-color: var(--text-muted); opacity: 0.6; }
+
+@keyframes pulse-border {
+  0%, 100% { box-shadow: 0 0 0 rgba(245, 165, 36, 0); }
+  50% { box-shadow: 0 0 14px rgba(245, 165, 36, 0.25); }
+}

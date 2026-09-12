@@ -1,0 +1,36 @@
+cd ~/circulo-agentic
+cat > .gitignore << 'EOF'
+# ── Python ───────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# ── Virtual environments (conda-created too — you have .venv / .venv-1) ──
+.venv/
+.venv-1/
+venv/
+env/
+
+# ── Environment / secrets ─────────────────────────────────────────────────
+.env
+*.env.local
+
+# ── SQLite (WAL mode creates sidecar files) ────────────────────────────────
+*.db
+*.db-wal
+*.db-shm
+
+# ── Frontend (Phase 8+) ─────────────────────────────────────────────────────
+node_modules/
+dist/
+.vite/
+
+# ── OS / editor cruft ───────────────────────────────────────────────────────
+.DS_Store
+*.swp
+.vscode/*
+!.vscode/extensions.json
+EOF
+
+cat .gitignore   # verify
