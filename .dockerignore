@@ -1,0 +1,15 @@
+# Keeps the build context small and fast — without this, Docker sends your
+# ENTIRE repo (including frontend/node_modules and any stray venvs) to the
+# daemon before the Dockerfile even runs, which is slow and wasteful since
+# backend/Dockerfile only actually needs backend/ and data/.
+.git
+**/__pycache__
+**/*.pyc
+.venv
+.venv-1
+backend/.venv
+frontend/node_modules
+frontend/dist
+**/.DS_Store
+**/*.db
+backend/app/memory/memory_store.json

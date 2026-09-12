@@ -1,0 +1,41 @@
+# CIRCULO — Phase 10 containerization.
+#
+# Deliberately no persistent volumes for the SQLite DB or memory_store.json:
+# every `docker compose up` (or `--build`) gives a guaranteed-fresh Golden
+# Path scenario, with no risk of a stale "verified prior transaction" from
+# an earlier rehearsal leaking into a live demo. If you later want state to
+# survive container restarts, add volumes under the backend service (see
+# the commented-out example below) — but that trades away the
+# always-clean-demo guarantee.
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      # Matches config.py's defaults exactly — set explicitly here so the
+      # container's behavior never silently depends on an implicit default
+      # changing later in app/config.py.
+      CIRCULO_CORS_ORIGINS: '["http://localhost:5173","http://127.0.0.1:5173"]'
+      CIRCULO_DETERMINISTIC_MODE: "true"
+    # volumes:
+    #   - circulo_db:/app/backend/app/database
+    #   - circulo_memory:/app/backend/app/memory
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: http://127.0.0.1:8000/api
+    ports:
+      - "5173:4173"
+    depends_on:
+      - backend
+
+# volumes:
+#   circulo_db:
+#   circulo_memory:
