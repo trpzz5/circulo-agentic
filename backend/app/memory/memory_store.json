@@ -446,5 +446,47 @@
     "observed_percent": null,
     "date": "2026-09-12T12:37:43.518635+00:00",
     "notes": "Ecosystem value Rs.15,891.50; route=Direct sale to BuildRight Constructions."
+  },
+  {
+    "id": "mem_6f146e0c1c",
+    "factory_id": "glass_mfr_z",
+    "factory_name": "Karavali Glass Industries",
+    "material_id": "processed_foundry_sand",
+    "material_name": "processed_foundry_sand",
+    "source_factory": "ABC Foundry",
+    "outcome": "accepted",
+    "reason": "selected_by_decision_agent",
+    "limit_percent": null,
+    "observed_percent": null,
+    "date": "2026-09-12T14:20:28.973093+00:00",
+    "notes": "Ecosystem value Rs.29,565.82; route=Karavali Glass Industries via Dakshina Processing Solutions."
+  },
+  {
+    "id": "mem_23772331d3",
+    "factory_id": "glass_mfr_z",
+    "factory_name": "Karavali Glass Industries",
+    "material_id": "processed_foundry_sand",
+    "material_name": "processed_foundry_sand",
+    "source_factory": "ABC Foundry",
+    "outcome": "accepted",
+    "reason": "selected_by_decision_agent",
+    "limit_percent": null,
+    "observed_percent": null,
+    "date": "2026-09-12T14:20:48.267967+00:00",
+    "notes": "Ecosystem value Rs.29,565.82; route=Karavali Glass Industries via Dakshina Processing Solutions."
+  },
+  {
+    "id": "mem_5732d9c02f",
+    "factory_id": "glass_mfr_z",
+    "factory_name": "Karavali Glass Industries",
+    "material_id": "processed_foundry_sand",
+    "material_name": "processed_foundry_sand",
+    "source_factory": "ABC Foundry",
+    "outcome": "accepted",
+    "reason": "selected_by_decision_agent",
+    "limit_percent": null,
+    "observed_percent": null,
+    "date": "2026-09-12T14:23:59.740802+00:00",
+    "notes": "Ecosystem value Rs.29,565.82; route=Karavali Glass Industries via Dakshina Processing Solutions."
   }
 ]

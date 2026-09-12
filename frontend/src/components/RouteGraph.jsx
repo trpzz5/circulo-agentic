@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { ReactFlow, Background, Controls, MiniMap } from '@xyflow/react'
+import { ReactFlow, Background, Controls } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
 import { buildGraphElements } from '../utils/buildGraph.js'
 import './RouteGraph.css'
@@ -34,11 +34,6 @@ export default function RouteGraph({ wasteDna, discovery, impactPerRoute, decisi
         <ReactFlow nodes={nodes} edges={edges} fitView proOptions={{ hideAttribution: true }}>
           <Background color="#232a35" gap={20} />
           <Controls showInteractive={false} />
-          <MiniMap
-            nodeColor={() => '#171c25'}
-            maskColor="rgba(10,13,18,0.7)"
-            style={{ background: '#12161d' }}
-          />
         </ReactFlow>
       </div>
     </div>
