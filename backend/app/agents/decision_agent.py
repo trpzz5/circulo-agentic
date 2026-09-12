@@ -176,4 +176,35 @@ class DecisionAgent(BaseAgent[DecisionRequest, DecisionPayload]):
         if len(rejected_routes) > 0 and any(r["prior_outcomes"] for r in rejected_routes):
             confidence = min(confidence + 0.05, 0.95)
 
-        # ── 4) Log this decision as a new
+        # ── 4) Log this decision as a new memory record — real runs only ────
+        if persist:
+            record = record_outcome(
+                factory_id=chosen["destination_factory_id"],
+                factory_name=chosen["destination_factory_name"],
+                material_id=chosen["material_id_for_memory"] or "unknown",
+                material_name=chosen["material_id_for_memory"] or dna.material,
+                source_factory=dna.source_factory,
+                outcome="accepted",
+                reason="selected_by_decision_agent",
+                notes=f"Ecosystem value Rs.{chosen['ecosystem_value']:,.2f}; route={chosen['label']}.",
+            )
+            memory_hits.append(record)
+        else:
+            debate.append("What-if mode — this outcome was not written to persistent memory.")
+
+        notes = [
+            f"Evaluated {len(scored)} viable candidate(s) and {len(rejected_routes)} rejected candidate(s).",
+            f"Recommended: {chosen['label']} (confidence {confidence:.0%}).",
+        ]
+
+        return AgentResult(
+            data=DecisionPayload(
+                recommended_route_id=chosen["route_key"],
+                rejected_routes=rejected_routes,
+                debate=debate,
+                memory_hits=memory_hits,
+                confidence=confidence,
+            ),
+            source=ExecutionSource.DETERMINISTIC,
+            notes=notes,
+        )
