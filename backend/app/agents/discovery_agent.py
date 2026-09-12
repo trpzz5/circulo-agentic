@@ -24,6 +24,7 @@ from app.api.schemas.common import AgentName, ExecutionSource
 from app.api.schemas.waste import WasteDNA
 from app.database import get_connection
 from app.tools.geo import haversine_km, resolve_source_coordinates
+from app.tools.materials import resolve_material_id
 
 logger = logging.getLogger(__name__)
 
@@ -66,7 +67,7 @@ class DiscoveryAgent(BaseAgent[DiscoveryRequest, DiscoveryPayload]):
         self, conn: sqlite3.Connection, payload: DiscoveryRequest, run_id: str
     ) -> AgentResult[DiscoveryPayload]:
         dna = payload.waste_dna
-        material_id, material_name = self._resolve_material(conn, dna.material)
+        material_id, material_name = resolve_material_id(conn, dna.material)
 
         if material_id is None:
             return AgentResult(
@@ -177,21 +178,6 @@ class DiscoveryAgent(BaseAgent[DiscoveryRequest, DiscoveryPayload]):
         )
 
     # ── Helpers ──────────────────────────────────────────────────────────
-
-    @staticmethod
-    def _resolve_material(conn: sqlite3.Connection, material_name: str) -> tuple[str | None, str]:
-        row = conn.execute(
-            "SELECT material_id, name FROM materials WHERE lower(name) = lower(?)", (material_name,)
-        ).fetchone()
-        if row:
-            return row["material_id"], row["name"]
-
-        slug = material_name.strip().lower().replace(" ", "_")
-        row = conn.execute("SELECT material_id, name FROM materials WHERE material_id = ?", (slug,)).fetchone()
-        if row:
-            return row["material_id"], row["name"]
-
-        return None, material_name
 
     @staticmethod
     def _find_buyers(

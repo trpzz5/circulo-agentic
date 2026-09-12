@@ -26,5 +26,61 @@
     "observed_percent": 5.0,
     "date": "2026-04-02T09:00:00+00:00",
     "notes": "Prior processed-sand shipment accepted without issue."
+  },
+  {
+    "id": "mem_313762c29f",
+    "factory_id": "coastal_cement",
+    "factory_name": "Coastal Cement Ltd",
+    "material_id": "foundry_sand",
+    "material_name": "Foundry Sand",
+    "source_factory": "ABC Foundry",
+    "outcome": "rejected",
+    "reason": "moisture 12.0% exceeds limit 8.0%",
+    "limit_percent": 8.0,
+    "observed_percent": 12.0,
+    "date": "2026-09-12T11:49:55.692288+00:00",
+    "notes": "Recorded automatically by the Decision Agent."
+  },
+  {
+    "id": "mem_c13f84af43",
+    "factory_id": "glass_mfr_z",
+    "factory_name": "Karavali Glass Industries",
+    "material_id": "foundry_sand",
+    "material_name": "Foundry Sand",
+    "source_factory": "ABC Foundry",
+    "outcome": "rejected",
+    "reason": "raw_material_rejected_requires_processing",
+    "limit_percent": null,
+    "observed_percent": 12.0,
+    "date": "2026-09-12T11:49:55.692732+00:00",
+    "notes": "Recorded automatically by the Decision Agent."
+  },
+  {
+    "id": "mem_8eafc8f9da",
+    "factory_id": "western_glass",
+    "factory_name": "Western Glass Co",
+    "material_id": "foundry_sand",
+    "material_name": "Foundry Sand",
+    "source_factory": "ABC Foundry",
+    "outcome": "rejected",
+    "reason": "raw_material_rejected_requires_processing",
+    "limit_percent": null,
+    "observed_percent": 12.0,
+    "date": "2026-09-12T11:49:55.694211+00:00",
+    "notes": "Recorded automatically by the Decision Agent."
+  },
+  {
+    "id": "mem_29caf9990b",
+    "factory_id": "glass_mfr_z",
+    "factory_name": "Karavali Glass Industries",
+    "material_id": "processed_foundry_sand",
+    "material_name": "processed_foundry_sand",
+    "source_factory": "ABC Foundry",
+    "outcome": "accepted",
+    "reason": "selected_by_decision_agent",
+    "limit_percent": null,
+    "observed_percent": null,
+    "date": "2026-09-12T11:49:55.694838+00:00",
+    "notes": "Ecosystem value Rs.29,565.82; route=Karavali Glass Industries via Dakshina Processing Solutions."
   }
 ]
