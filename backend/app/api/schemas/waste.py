@@ -36,3 +36,15 @@ class WasteDNA(BaseModel):
     manifest_id: str | None = None
     extraction_confidence: float = Field(default=1.0, ge=0.0, le=1.0)
     hazard_class: str | None = None
+
+
+class ManifestUploadResponse(BaseModel):
+    """Returned immediately after upload — extraction only, no DNA yet."""
+    manifest_id: str
+    filename: str
+    page_count: int
+    character_count: int
+    text_preview: str = Field(..., description="First ~300 chars of extracted text.")
+    likely_unreadable: bool = Field(
+        ..., description="True if almost no text was extracted (e.g. a scanned image)."
+    )
