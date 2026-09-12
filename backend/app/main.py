@@ -22,6 +22,7 @@ from app.api.router import api_router
 from app.api.schemas.common import ErrorResponse, Severity
 from app.config import get_settings
 from app.database import init_db
+from app.database.seed import run as seed_database
 
 logging.basicConfig(
     level=logging.INFO,
@@ -46,6 +47,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
     try:
         init_db()
+        seed_database()
     except Exception:
         logger.exception("FATAL: database initialisation failed")
         raise
