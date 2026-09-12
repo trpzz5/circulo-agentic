@@ -82,5 +82,19 @@
     "observed_percent": null,
     "date": "2026-09-12T11:49:55.694838+00:00",
     "notes": "Ecosystem value Rs.29,565.82; route=Karavali Glass Industries via Dakshina Processing Solutions."
+  },
+  {
+    "id": "mem_2c23e5879f",
+    "factory_id": "glass_mfr_z",
+    "factory_name": "Karavali Glass Industries",
+    "material_id": "processed_foundry_sand",
+    "material_name": "processed_foundry_sand",
+    "source_factory": "ABC Foundry",
+    "outcome": "accepted",
+    "reason": "selected_by_decision_agent",
+    "limit_percent": null,
+    "observed_percent": null,
+    "date": "2026-09-12T12:01:47.193418+00:00",
+    "notes": "Ecosystem value Rs.29,565.82; route=Karavali Glass Industries via Dakshina Processing Solutions."
   }
 ]
