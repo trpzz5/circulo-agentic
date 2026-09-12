@@ -1,42 +1,493 @@
+/* ==========================================================================
+   CIRCULO — LIVE AGENT ACTIVITY
+   ========================================================================== */
+
 .timeline {
   display: flex;
   flex-direction: column;
   min-height: 0;
   flex: 1;
+
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  overflow: hidden;
 }
 
+/* --------------------------------------------------------------------------
+   Header
+   -------------------------------------------------------------------------- */
+
 .timeline__header {
-  padding: 10px 14px;
+  min-height: 42px;
+  padding: 0 14px;
+
+  display: flex;
+  align-items: center;
+
   border-bottom: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.012);
+
+  position: relative;
 }
+
+.timeline__header::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+
+  margin-right: 8px;
+
+  border-radius: 50%;
+  background: var(--accent-green);
+
+  box-shadow: 0 0 8px rgba(47, 217, 122, 0.7);
+
+  animation: timeline-live-pulse 1.8s ease-in-out infinite;
+}
+
+/* --------------------------------------------------------------------------
+   Body
+   -------------------------------------------------------------------------- */
 
 .timeline__body {
   flex: 1;
+  min-height: 0;
+
   overflow-y: auto;
-  padding: 8px 14px;
-  font-size: 12px;
+
+  padding: 4px 14px 8px;
+
+  font-family: var(--mono-font);
+  font-size: 11px;
+
+  scrollbar-width: thin;
 }
+
+/* --------------------------------------------------------------------------
+   Empty state
+   -------------------------------------------------------------------------- */
 
 .timeline__empty {
   color: var(--text-muted);
-  padding: 20px 0;
+
+  padding: 32px 12px;
+
   text-align: center;
+
+  font-family: var(--mono-font);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
+
+/* --------------------------------------------------------------------------
+   Event row
+   -------------------------------------------------------------------------- */
 
 .timeline__row {
+  position: relative;
+
   display: grid;
-  grid-template-columns: 90px 90px 90px 1fr;
+  grid-template-columns: 70px 82px 78px minmax(0, 1fr);
+
   gap: 10px;
-  padding: 6px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.03);
-  align-items: baseline;
+
+  min-height: 31px;
+  padding: 7px 4px;
+
+  align-items: center;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.035);
+
+  transition:
+    background 160ms ease,
+    border-color 160ms ease;
 }
 
-.timeline__time { color: var(--text-muted); }
-.timeline__agent { color: var(--accent-blue); text-transform: uppercase; font-size: 11px; }
-.timeline__status { text-transform: uppercase; font-size: 10px; letter-spacing: 0.05em; color: var(--text-secondary); }
-.timeline__note { color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.timeline__row:last-child {
+  border-bottom: 0;
+}
 
-.timeline__row--complete .timeline__status { color: var(--accent-green); }
-.timeline__row--failed .timeline__status { color: var(--accent-red); }
-.timeline__row--running .timeline__status { color: var(--accent-amber); }
+.timeline__row:hover {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+/* --------------------------------------------------------------------------
+   Timestamp
+   -------------------------------------------------------------------------- */
+
+.timeline__time {
+  color: var(--text-muted);
+
+  font-family: var(--mono-font);
+  font-size: 10px;
+
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Agent
+   -------------------------------------------------------------------------- */
+
+.timeline__agent {
+  color: var(--accent-blue);
+
+  text-transform: uppercase;
+
+  font-family: var(--mono-font);
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 0.07em;
+
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Status
+   -------------------------------------------------------------------------- */
+
+.timeline__status {
+  display: inline-flex;
+  align-items: center;
+
+  width: fit-content;
+
+  text-transform: uppercase;
+
+  font-family: var(--mono-font);
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 0.06em;
+
+  color: var(--text-secondary);
+
+  white-space: nowrap;
+}
+
+.timeline__status::before {
+  content: "";
+
+  width: 4px;
+  height: 4px;
+
+  margin-right: 6px;
+
+  border-radius: 50%;
+
+  background: currentColor;
+  opacity: 0.8;
+}
+
+/* --------------------------------------------------------------------------
+   Event message
+   -------------------------------------------------------------------------- */
+
+.timeline__note {
+  min-width: 0;
+
+  color: var(--text-secondary);
+
+  font-family: var(--ui-font);
+  font-size: 10px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   COMPLETE
+   -------------------------------------------------------------------------- */
+
+.timeline__row--complete {
+  border-left: 2px solid transparent;
+}
+
+.timeline__row--complete .timeline__status {
+  color: var(--accent-green);
+}
+
+.timeline__row--complete .timeline__agent {
+  color: var(--accent-blue);
+}
+
+/* --------------------------------------------------------------------------
+   RUNNING
+   -------------------------------------------------------------------------- */
+
+.timeline__row--running {
+  background: linear-gradient(
+    90deg,
+    rgba(245, 165, 36, 0.075),
+    rgba(245, 165, 36, 0.015),
+    transparent
+  );
+
+  border-left: 2px solid var(--accent-amber);
+}
+
+.timeline__row--running .timeline__status {
+  color: var(--accent-amber);
+}
+
+.timeline__row--running .timeline__status::before {
+  box-shadow: 0 0 7px rgba(245, 165, 36, 0.8);
+  animation: timeline-running-pulse 1s ease-in-out infinite;
+}
+
+.timeline__row--running .timeline__note {
+  color: var(--text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   FAILED
+   -------------------------------------------------------------------------- */
+
+.timeline__row--failed {
+  background: rgba(239, 74, 92, 0.045);
+
+  border-left: 2px solid var(--accent-red);
+}
+
+.timeline__row--failed .timeline__status {
+  color: var(--accent-red);
+}
+
+.timeline__row--failed .timeline__note {
+  color: var(--text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   WAITING
+   -------------------------------------------------------------------------- */
+
+.timeline__row--waiting .timeline__status {
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   SKIPPED
+   -------------------------------------------------------------------------- */
+
+.timeline__row--skipped {
+  opacity: 0.55;
+}
+
+.timeline__row--skipped .timeline__status {
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Scrollbar
+   -------------------------------------------------------------------------- */
+
+.timeline__body::-webkit-scrollbar {
+  width: 5px;
+}
+
+.timeline__body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.timeline__body::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+}
+
+/* --------------------------------------------------------------------------
+   Animations
+   -------------------------------------------------------------------------- */
+
+@keyframes timeline-live-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.9);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes timeline-running-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 760px) {
+  .timeline__row {
+    grid-template-columns: 62px 72px 68px minmax(0, 1fr);
+    gap: 7px;
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+
+  .timeline__note {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 560px) {
+  .timeline__row {
+    grid-template-columns: 58px 1fr;
+    gap: 3px 8px;
+    padding: 8px 2px;
+  }
+
+  .timeline__time {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .timeline__agent {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .timeline__status {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .timeline__note {
+    grid-column: 2;
+    grid-row: 2;
+  }
+}
+/* ==========================================================================
+   LIVE ACTIVITY HEADER
+   ========================================================================== */
+
+.timeline__header {
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.timeline__header-main {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.timeline__header-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  color: var(--text-muted);
+
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.timeline__live {
+  display: inline-flex;
+  align-items: center;
+
+  margin-left: 10px;
+  padding: 3px 7px;
+
+  border: 1px solid rgba(47, 217, 122, 0.35);
+  border-radius: 999px;
+
+  color: var(--accent-green);
+
+  font-family: var(--mono-font);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.timeline__running {
+  color: var(--accent-amber);
+}
+
+/* ==========================================================================
+   LATEST EVENT
+   ========================================================================== */
+
+.timeline__row--latest {
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.timeline__row--latest .timeline__note {
+  color: var(--text-primary);
+}
+
+.timeline__row--latest .timeline__time {
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+
+.timeline__footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  min-height: 30px;
+  padding: 0 14px;
+
+  border-top: 1px solid var(--border-subtle);
+
+  background: rgba(255, 255, 255, 0.012);
+
+  overflow: hidden;
+}
+
+.timeline__footer-label {
+  flex: 0 0 auto;
+
+  color: var(--text-muted);
+  font-size: 8px;
+}
+
+.timeline__footer-note {
+  min-width: 0;
+
+  color: var(--text-secondary);
+
+  font-size: 9px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   EMPTY STATE
+   ========================================================================== */
+
+.timeline__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.timeline__empty-dot {
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: var(--accent-slate);
+}

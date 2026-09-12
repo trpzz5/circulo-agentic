@@ -1,109 +1,685 @@
+/* ==========================================================================
+   CIRCULO — Industrial Waste Manifest
+   Step 5 redesign
+   ========================================================================== */
+
 .upload-panel {
-  padding: 16px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 18px;
+  overflow: hidden;
 }
 
-.upload-panel__header {
+/* ==========================================================================
+   TOP / HEADER
+   ========================================================================== */
+
+.upload-panel__top {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 24px;
 }
 
-.upload-panel__tabs {
-  display: flex;
-  gap: 4px;
+.upload-panel__heading {
+  min-width: 0;
 }
 
-.upload-panel__tabs button {
-  background: var(--bg-panel-raised);
-  border: 1px solid var(--border-subtle);
-  color: var(--text-secondary);
-  padding: 4px 10px;
-  font-size: 11px;
-  border-radius: 4px;
-}
-
-.upload-panel__tabs button.active {
+.upload-panel__eyebrow {
+  margin-bottom: 7px;
   color: var(--accent-amber);
-  border-color: var(--accent-amber);
-}
-
-.upload-panel__textarea {
-  background: var(--bg-void);
-  border: 1px solid var(--border-subtle);
-  border-radius: 6px;
-  color: var(--text-primary);
   font-family: var(--mono-font);
-  font-size: 13px;
-  padding: 12px;
-  min-height: 140px;
-  resize: vertical;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
-.upload-panel__file {
+.upload-panel__title-row {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px;
-  border: 1px dashed var(--border-strong);
-  border-radius: 6px;
-}
-
-.upload-panel__filename {
-  font-family: var(--mono-font);
-  font-size: 12px;
-  color: var(--accent-blue);
-}
-
-.upload-panel__footer {
-  display: flex;
-  align-items: flex-end;
   gap: 12px;
   flex-wrap: wrap;
 }
 
-.upload-panel__hops {
+.upload-panel__title {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 18px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.upload-panel__description {
+  margin: 7px 0 0;
+  color: var(--text-secondary);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   INPUT STATUS
+   ========================================================================== */
+
+.upload-panel__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 22px;
+  padding: 4px 8px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  color: var(--text-muted);
+  font-family: var(--mono-font);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.upload-panel__status-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-slate);
+  box-shadow: 0 0 7px rgba(107, 118, 136, 0.35);
+}
+
+.upload-panel__status:has(.upload-panel__status-dot) {
+  background: rgba(255, 255, 255, 0.015);
+}
+
+/* ==========================================================================
+   PASTE / PDF TABS
+   ========================================================================== */
+
+.upload-panel__tabs {
+  display: flex;
+  flex-shrink: 0;
+  padding: 3px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 7px;
+  background: var(--bg-void);
+}
+
+.upload-panel__tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 30px;
+  padding: 0 11px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--mono-font);
+  font-size: 9px;
+  font-weight: 600;
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.upload-panel__tab:hover:not(:disabled) {
+  color: var(--text-secondary);
+}
+
+.upload-panel__tab--active {
+  border-color: var(--accent-amber);
+  background: rgba(245, 165, 36, 0.07);
+  color: var(--accent-amber);
+}
+
+.upload-panel__tab-icon {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.upload-panel__tab:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+/* ==========================================================================
+   MANIFEST CONTAINER
+   ========================================================================== */
+
+.upload-panel__manifest {
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  background: var(--bg-void);
+}
+
+.upload-panel__manifest-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 11px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.012);
+}
+
+.upload-panel__manifest-label,
+.upload-panel__manifest-type {
+  font-family: var(--mono-font);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.upload-panel__manifest-label {
+  color: var(--text-secondary);
+}
+
+.upload-panel__manifest-type {
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   TEXTAREA
+   ========================================================================== */
+
+.upload-panel__textarea {
+  display: block;
+  width: 100%;
+  min-height: 156px;
+  padding: 14px;
+  border: 0;
+  outline: 0;
+  resize: vertical;
+
+  background: transparent;
+  color: var(--text-primary);
+
+  font-family: var(--mono-font);
+  font-size: 11px;
+  line-height: 1.65;
+
+  caret-color: var(--accent-amber);
+}
+
+.upload-panel__textarea::placeholder {
+  color: #4c5768;
+  opacity: 1;
+}
+
+.upload-panel__textarea:focus {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(245, 165, 36, 0.025),
+      transparent 45%
+    );
+}
+
+.upload-panel__textarea:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* ==========================================================================
+   MANIFEST FOOTER
+   ========================================================================== */
+
+.upload-panel__manifest-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  min-height: 29px;
+  padding: 0 11px;
+
+  border-top: 1px solid var(--border-subtle);
+
+  color: var(--text-muted);
+  font-family: var(--mono-font);
+  font-size: 8px;
+}
+
+.upload-panel__character-count {
+  flex-shrink: 0;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   PDF DROP AREA
+   ========================================================================== */
+
+.upload-panel__file {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-height: 156px;
+  margin: 12px;
+  padding: 20px;
+
+  border: 1px dashed var(--border-strong);
+  border-radius: 7px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(74, 157, 245, 0.035),
+      transparent 55%
+    );
+
+  cursor: pointer;
+
+  transition:
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.upload-panel__file:hover {
+  border-color: var(--accent-blue);
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(74, 157, 245, 0.065),
+      transparent 60%
+    );
+}
+
+.upload-panel__file--selected {
+  border-color: var(--accent-green);
+  border-style: solid;
+}
+
+.upload-panel__file input {
+  display: none;
+}
+
+.upload-panel__file-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  width: 40px;
+  height: 40px;
+
+  border: 1px solid var(--border-strong);
+  border-radius: 7px;
+
+  color: var(--accent-blue);
+  font-family: var(--mono-font);
+  font-size: 18px;
+}
+
+.upload-panel__file--selected .upload-panel__file-icon {
+  border-color: rgba(47, 217, 122, 0.45);
+  color: var(--accent-green);
+}
+
+.upload-panel__file-content {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
 }
 
-.upload-panel__hops select {
-  background: var(--bg-panel-raised);
-  border: 1px solid var(--border-subtle);
+.upload-panel__file-title {
+  overflow: hidden;
   color: var(--text-primary);
-  padding: 6px 8px;
-  border-radius: 4px;
-  font-size: 12px;
+  font-family: var(--mono-font);
+  font-size: 10px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.upload-panel__file-subtitle {
+  color: var(--text-muted);
+  font-size: 9px;
+}
+
+/* ==========================================================================
+   ROUTING DEPTH
+   ========================================================================== */
+
+.upload-panel__routing {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.upload-panel__routing-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.upload-panel__section-label {
+  color: var(--text-secondary);
+  font-family: var(--mono-font);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.upload-panel__section-description {
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 9px;
+}
+
+.upload-panel__hop-value {
+  color: var(--accent-amber);
+  font-family: var(--mono-font);
+  font-size: 9px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   HOP OPTIONS
+   ========================================================================== */
+
+.upload-panel__hop-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.upload-panel__hop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 8px 10px;
+
+  border: 1px solid var(--border-subtle);
+  border-radius: 7px;
+
+  background: transparent;
+  color: var(--text-secondary);
+
+  text-align: left;
+
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease;
+}
+
+.upload-panel__hop:hover:not(:disabled) {
+  border-color: var(--border-strong);
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.upload-panel__hop--active {
+  border-color: var(--accent-amber);
+  background: rgba(245, 165, 36, 0.055);
+  color: var(--text-primary);
+}
+
+.upload-panel__hop--active:hover:not(:disabled) {
+  border-color: var(--accent-amber);
+  background: rgba(245, 165, 36, 0.07);
+}
+
+.upload-panel__hop-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  width: 31px;
+  height: 31px;
+
+  border: 1px solid var(--border-subtle);
+  border-radius: 5px;
+
+  color: var(--text-muted);
+  font-family: var(--mono-font);
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.upload-panel__hop--active .upload-panel__hop-number {
+  border-color: rgba(245, 165, 36, 0.55);
+  color: var(--accent-amber);
+}
+
+.upload-panel__hop-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.upload-panel__hop-content strong {
+  color: inherit;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.upload-panel__hop-content small {
+  overflow: hidden;
+  color: var(--text-muted);
+  font-family: var(--mono-font);
+  font-size: 7px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.upload-panel__hop--active .upload-panel__hop-content small {
+  color: var(--text-secondary);
+}
+
+.upload-panel__hop:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ==========================================================================
+   ACTION BAR
+   ========================================================================== */
+
+.upload-panel__actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding-top: 2px;
+}
+
+.upload-panel__actions-left {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
 }
 
 .upload-panel__sample {
-  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  min-height: 34px;
+  padding: 0 12px;
+
   border: 1px solid var(--border-strong);
-  color: var(--text-secondary);
-  padding: 8px 12px;
   border-radius: 6px;
-  font-size: 11px;
+
+  background: transparent;
+  color: var(--text-secondary);
+
+  font-family: var(--mono-font);
+  font-size: 8px;
+  font-weight: 600;
+
+  transition:
+    border-color 160ms ease,
+    color 160ms ease,
+    background 160ms ease;
 }
 
-.upload-panel__sample:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+.upload-panel__sample:hover:not(:disabled) {
+  border-color: var(--accent-blue);
+  background: rgba(74, 157, 245, 0.04);
+  color: var(--accent-blue);
+}
+
+.upload-panel__sample:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.upload-panel__sample-icon {
+  font-size: 13px;
+}
+
+.upload-panel__divider {
+  width: 1px;
+  height: 22px;
+  background: var(--border-subtle);
+}
+
+.upload-panel__engine-status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  color: var(--text-muted);
+
+  font-family: var(--mono-font);
+  font-size: 8px;
+  white-space: nowrap;
+}
+
+.upload-panel__engine-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-green);
+  box-shadow: 0 0 9px rgba(47, 217, 122, 0.45);
+}
+
+/* ==========================================================================
+   RUN BUTTON
+   ========================================================================== */
 
 .upload-panel__run {
-  margin-left: auto;
-  background: var(--accent-amber);
-  border: none;
-  color: #1a1200;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  padding: 10px 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  min-width: 145px;
+  min-height: 38px;
+  padding: 0 15px;
+
+  border: 1px solid transparent;
   border-radius: 6px;
-  font-size: 12px;
+
+  background: var(--accent-amber);
+  color: #1a1200;
+
+  font-family: var(--mono-font);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+
+  transition:
+    transform 120ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
+}
+
+.upload-panel__run:hover:not(:disabled) {
+  background: #ffb53c;
+  box-shadow: 0 0 22px rgba(245, 165, 36, 0.15);
+  transform: translateY(-1px);
+}
+
+.upload-panel__run:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .upload-panel__run:disabled {
   background: var(--border-strong);
   color: var(--text-muted);
   cursor: not-allowed;
+  box-shadow: none;
+}
+
+.upload-panel__run-arrow {
+  font-size: 15px;
+  line-height: 1;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .upload-panel__top {
+    flex-direction: column;
+  }
+
+  .upload-panel__tabs {
+    align-self: stretch;
+  }
+
+  .upload-panel__tab {
+    flex: 1;
+  }
+
+  .upload-panel__hop-options {
+    grid-template-columns: 1fr;
+  }
+
+  .upload-panel__actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .upload-panel__actions-left {
+    width: 100%;
+  }
+
+  .upload-panel__run {
+    width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+  .upload-panel {
+    padding: 14px;
+  }
+
+  .upload-panel__title {
+    font-size: 16px;
+  }
+
+  .upload-panel__description {
+    font-size: 10px;
+  }
+
+  .upload-panel__actions-left {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .upload-panel__divider {
+    display: none;
+  }
+
+  .upload-panel__manifest-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+  }
 }

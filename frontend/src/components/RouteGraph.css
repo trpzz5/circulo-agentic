@@ -1,66 +1,407 @@
+/* ==========================================================================
+   CIRCULO — INDUSTRIAL NETWORK
+   ========================================================================== */
+
 .route-graph {
+  position: relative;
+
   display: flex;
   flex-direction: column;
+
   min-height: 0;
+
   overflow: hidden;
+
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
 }
+
+/* ==========================================================================
+   EMPTY STATE
+   ========================================================================== */
 
 .route-graph--empty {
   align-items: center;
   justify-content: center;
-  gap: 8px;
+
+  gap: 7px;
+
   padding: 24px;
+
+  text-align: center;
+}
+
+.route-graph__empty-mark {
+  margin-bottom: 4px;
+
+  color: var(--accent-slate);
+
+  font-family: var(--mono-font);
+  font-size: 30px;
+
+  opacity: 0.45;
 }
 
 .route-graph__placeholder {
-  color: var(--text-muted);
-  font-size: 13px;
+  max-width: 280px;
+
   margin: 0;
+
+  color: var(--text-muted);
+
+  font-size: 11px;
+  line-height: 1.5;
 }
 
+.route-graph__empty-status {
+  margin-top: 5px;
+
+  color: var(--text-muted);
+
+  font-size: 8px;
+  letter-spacing: 0.1em;
+}
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+
 .route-graph__header {
+  min-height: 48px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 16px;
+
+  gap: 16px;
+
+  padding: 0 14px;
+
   border-bottom: 1px solid var(--border-subtle);
-  flex-wrap: wrap;
-  gap: 8px;
+
+  background: rgba(255, 255, 255, 0.012);
+}
+
+.route-graph__title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  min-width: 0;
+}
+
+.route-graph__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  color: var(--accent-green);
+
+  font-family: var(--mono-font);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+
+  white-space: nowrap;
+}
+
+.route-graph__status-dot {
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: var(--accent-green);
+
+  box-shadow:
+    0 0 8px rgba(47, 217, 122, 0.7);
+
+  animation: route-status-pulse 1.8s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   HEADER META
+   ========================================================================== */
+
+.route-graph__meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  color: var(--text-muted);
+
+  font-size: 8px;
+
+  white-space: nowrap;
 }
 
 .route-graph__legend {
   display: flex;
   align-items: center;
-  font-size: 10px;
+  gap: 11px;
+
   color: var(--text-muted);
+
+  font-family: var(--ui-font);
+  font-size: 8px;
+
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-.route-graph__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  display: inline-block;
-  margin-left: 12px;
-  margin-right: 4px;
+.route-graph__legend-item {
+  display: inline-flex;
+  align-items: center;
 }
-.route-graph__dot:first-child { margin-left: 0; }
 
-.route-graph__dot--source { background: var(--accent-amber); }
-.route-graph__dot--processor { background: var(--accent-blue); }
-.route-graph__dot--recommended { background: var(--accent-green); }
-.route-graph__dot--rejected { background: var(--accent-red); }
+/* ==========================================================================
+   LEGEND DOTS
+   ========================================================================== */
+
+.route-graph__dot {
+  width: 6px;
+  height: 6px;
+
+  flex: 0 0 auto;
+
+  display: inline-block;
+
+  margin-right: 4px;
+
+  border-radius: 50%;
+}
+
+.route-graph__dot--source {
+  background: var(--accent-amber);
+}
+
+.route-graph__dot--processor {
+  background: var(--accent-blue);
+}
+
+.route-graph__dot--recommended {
+  background: var(--accent-green);
+
+  box-shadow:
+    0 0 6px rgba(47, 217, 122, 0.45);
+}
+
+.route-graph__dot--rejected {
+  background: var(--accent-red);
+}
+
+/* ==========================================================================
+   CANVAS
+   ========================================================================== */
 
 .route-graph__canvas {
+  position: relative;
+
   flex: 1;
+
   min-height: 340px;
+
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(74, 157, 245, 0.025),
+      transparent 55%
+    );
 }
 
 .route-graph__canvas .react-flow {
-  background: var(--bg-panel);
+  background: transparent;
 }
 
-.route-graph__canvas .react-flow__attribution {
-  display: none;
+.route-graph__canvas .react-flow__pane {
+  cursor: default;
+}
+
+.route-graph__canvas .react-flow__background {
+  opacity: 0.55;
+}
+
+/* ==========================================================================
+   REACT FLOW CONTROLS
+   ========================================================================== */
+
+.route-graph__canvas .react-flow__controls {
+  left: 12px;
+  bottom: 12px;
+
+  box-shadow: none;
+}
+
+.route-graph__canvas .react-flow__controls-button {
+  width: 26px;
+  height: 26px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  background: var(--bg-panel-raised);
+
+  border: 1px solid var(--border-subtle);
+  border-bottom: 0;
+
+  color: var(--text-secondary);
+
+  transition:
+    color 150ms ease,
+    background 150ms ease,
+    border-color 150ms ease;
+}
+
+.route-graph__canvas .react-flow__controls-button:last-child {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.route-graph__canvas .react-flow__controls-button:hover {
+  background: var(--bg-panel);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+.route-graph__canvas .react-flow__controls-button svg {
+  max-width: 12px;
+  max-height: 12px;
+}
+
+/* ==========================================================================
+   NODE PRESENTATION
+   ========================================================================== */
+
+.route-graph__canvas .react-flow__node {
+  font-family: var(--ui-font);
+}
+
+/*
+ * Preserve node-specific styling coming from buildGraphElements.
+ * These rules only add depth and interaction.
+ */
+
+.route-graph__canvas .react-flow__node-default,
+.route-graph__canvas .react-flow__node-input,
+.route-graph__canvas .react-flow__node-output {
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.22);
+
+  transition:
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.route-graph__canvas .react-flow__node:hover {
+  z-index: 10;
+}
+
+/* ==========================================================================
+   EDGES
+   ========================================================================== */
+
+.route-graph__canvas .react-flow__edge-path {
+  stroke-width: 1.5;
+}
+
+.route-graph__canvas .react-flow__edge-text {
+  font-family: var(--mono-font);
+  font-size: 8px;
+}
+
+.route-graph__canvas .react-flow__edge-textbg {
+  fill: var(--bg-panel);
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+
+.route-graph__footer {
+  min-height: 34px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 0 14px;
+
+  border-top: 1px solid var(--border-subtle);
+
+  background: rgba(255, 255, 255, 0.012);
+
+  overflow: hidden;
+}
+
+.route-graph__footer .label-caps {
+  flex: 0 0 auto;
+
+  font-size: 8px;
+}
+
+.route-graph__footer-route {
+  min-width: 0;
+
+  color: var(--accent-green);
+
+  font-size: 9px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   ANIMATION
+   ========================================================================== */
+
+@keyframes route-status-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.9);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .route-graph__header {
+    align-items: flex-start;
+    flex-direction: column;
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .route-graph__meta {
+    width: 100%;
+
+    justify-content: space-between;
+  }
+
+  .route-graph__canvas {
+    min-height: 360px;
+  }
+}
+
+@media (max-width: 650px) {
+  .route-graph__legend {
+    gap: 7px;
+  }
+
+  .route-graph__legend-item:nth-child(3),
+  .route-graph__legend-item:nth-child(4) {
+    display: none;
+  }
 }

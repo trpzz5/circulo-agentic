@@ -1,4 +1,5 @@
 import HealthBadge from './components/HealthBadge.jsx'
+import Sidebar from './components/Sidebar.jsx'
 import UploadPanel from './components/UploadPanel.jsx'
 import AgentStatusRail from './components/AgentStatusRail.jsx'
 import ActivityTimeline from './components/ActivityTimeline.jsx'
@@ -10,48 +11,120 @@ import './App.css'
 
 export default function App() {
   const {
-    agents, timeline, decision, phase, error, run, maxHops,
-    graph, isSimulated, baseWasteDna, applySimulation, clearSimulation,
+    agents,
+    timeline,
+    decision,
+    phase,
+    error,
+    run,
+    maxHops,
+    graph,
+    isSimulated,
+    baseWasteDna,
+    applySimulation,
+    clearSimulation,
   } = usePipeline()
+
   const isRunning = phase === 'running'
 
   return (
-    <div className="app-shell">
-      <header className="app-header">
-        <div>
-          <div className="app-header__title">CIRCULO</div>
-          <div className="app-header__tagline label-caps">Agentic Industrial Symbiosis Engine</div>
-        </div>
-        <HealthBadge />
-      </header>
+    <div className="app-layout">
+      <Sidebar />
 
-      <main className="app-main">
-        <section className="app-main__left">
-          <UploadPanel onRun={run} disabled={isRunning} />
-          <AgentStatusRail agents={agents} />
-          {error && <div className="app-error">{error}</div>}
-          <ActivityTimeline events={timeline} />
+      <div className="app-shell">
+        <header
+          id="dashboard"
+          className="app-header"
+        >
+          <div className="app-header__identity">
+            <div className="app-header__eyebrow mono">
+              CIRCULO / COMMAND CENTER
+            </div>
+
+            <div className="app-header__title">
+              Industrial Symbiosis Engine
+            </div>
+
+            <div className="app-header__tagline label-caps">
+              Agentic material intelligence
+            </div>
+          </div>
+
+          <HealthBadge />
+        </header>
+
+        <main className="app-main">
+          <section className="app-main__left">
+            <div
+              id="analysis-input"
+              className="app-section-anchor"
+            />
+
+            <UploadPanel
+              onRun={run}
+              disabled={isRunning}
+            />
+
+            <AgentStatusRail agents={agents} />
+
+            {error && (
+              <div className="app-error">
+                <span className="app-error__label mono">
+                  PIPELINE ERROR
+                </span>
+
+                <span>{error}</span>
+              </div>
+            )}
+
+            <div
+              id="memory"
+              className="app-section-anchor"
+            />
+
+            <ActivityTimeline events={timeline} />
+          </section>
+
+          <aside
+            id="decision"
+            className="app-main__right"
+          >
+            <DecisionSummary
+              decision={
+                isSimulated
+                  ? graph?.decision
+                  : decision
+              }
+            />
+          </aside>
+        </main>
+
+        <section className="app-graph-row">
+          <div
+            id="network"
+            className="app-graph-container"
+          >
+            <RouteGraph
+              wasteDna={graph?.wasteDna}
+              discovery={graph?.discovery}
+              impactPerRoute={graph?.impactPerRoute}
+              decision={graph?.decision}
+            />
+          </div>
+
+          <div
+            id="what-if"
+            className="app-simulator-container"
+          >
+            <WhatIfPanel
+              wasteDna={baseWasteDna}
+              maxHops={maxHops}
+              onResult={applySimulation}
+              onReset={clearSimulation}
+            />
+          </div>
         </section>
-
-        <aside className="app-main__right">
-          <DecisionSummary decision={isSimulated ? graph?.decision : decision} />
-        </aside>
-      </main>
-
-      <section className="app-graph-row">
-        <RouteGraph
-          wasteDna={graph?.wasteDna}
-          discovery={graph?.discovery}
-          impactPerRoute={graph?.impactPerRoute}
-          decision={graph?.decision}
-        />
-        <WhatIfPanel
-          wasteDna={baseWasteDna}
-          maxHops={maxHops}
-          onResult={applySimulation}
-          onReset={clearSimulation}
-        />
-      </section>
+      </div>
     </div>
   )
 }
