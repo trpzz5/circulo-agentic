@@ -1,92 +1,163 @@
-/**
- * Thin wrapper over the CIRCULO backend API. Every call here corresponds
- * exactly to a Phase 1-9 endpoint — nothing invented, nothing hidden.
- */
-
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api'
+const API_BASE =
+  import.meta.env.VITE_API_BASE_URL ||
+  'http://127.0.0.1:8000/api'
 
 async function handleResponse(response) {
   if (!response.ok) {
-    const body = await response.json().catch(() => ({}))
-    throw new Error(body.error || `Request failed with status ${response.status}`)
+    let message = `Request failed with status ${response.status}`
+
+    try {
+      const data = await response.json()
+
+      if (data?.detail) {
+        message =
+          typeof data.detail === 'string'
+            ? data.detail
+            : JSON.stringify(data.detail)
+      }
+    } catch {
+      // Keep the default HTTP error message.
+    }
+
+    throw new Error(message)
   }
+
   return response.json()
 }
 
 export async function getHealth() {
-  const res = await fetch(`${API_BASE}/health`)
-  return handleResponse(res)
+  const response = await fetch(`${API_BASE}/health`)
+
+  return handleResponse(response)
 }
 
 export async function uploadManifest(file) {
   const formData = new FormData()
   formData.append('file', file)
-  const res = await fetch(`${API_BASE}/upload-manifest`, { method: 'POST', body: formData })
-  return handleResponse(res)
+
+  const response = await fetch(
+    `${API_BASE}/upload-manifest`,
+    {
+      method: 'POST',
+      body: formData,
+    }
+  )
+
+  return handleResponse(response)
 }
 
-export async function startAnalysis({ rawText, manifestId, maxHops = 2 }) {
-  const res = await fetch(`${API_BASE}/analyze`, {
+export async function startAnalysis({
+  rawText,
+  manifestId,
+  maxHops = 2,
+}) {
+  const response = await fetch(`${API_BASE}/analyze`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify({
       raw_text: rawText || null,
       manifest_id: manifestId || null,
       max_hops: maxHops,
     }),
   })
-  return handleResponse(res)
+
+  return handleResponse(response)
 }
 
 export async function getRunResult(runId) {
-  const res = await fetch(`${API_BASE}/routes/${runId}`)
-  return handleResponse(res)
+  const response = await fetch(
+    `${API_BASE}/routes/${encodeURIComponent(runId)}`
+  )
+
+  return handleResponse(response)
 }
 
-export function subscribeToRun(runId, { onEvent, onDone, onError }) {
-  const source = new EventSource(`${API_BASE}/stream/${runId}`)
+export function subscribeToRun(
+  runId,
+  {
+    onEvent,
+    onDone,
+    onError,
+  }
+) {
+  const source = new EventSource(
+    `${API_BASE}/stream/${encodeURIComponent(runId)}`
+  )
 
-  source.onmessage = (message) => {
+  source.onmessage = (event) => {
     try {
-      onEvent(JSON.parse(message.data))
-    } catch (err) {
-      console.error('Malformed SSE event', err, message.data)
+      const data = JSON.parse(event.data)
+      onEvent?.(data)
+
+      if (
+        data.agent === 'pipeline' &&
+        (data.status === 'complete' ||
+          data.status === 'failed')
+      ) {
+        onDone?.()
+        source.close()
+      }
+    } catch (error) {
+      console.error(
+        'Failed to parse pipeline event:',
+        error
+      )
     }
   }
 
-  source.addEventListener('done', () => {
+  source.onerror = () => {
+    onError?.()
     source.close()
-    onDone?.()
-  })
-
-  source.onerror = (err) => {
-    source.close()
-    onError?.(err)
   }
 
-  return () => source.close()
+  return () => {
+    source.close()
+  }
 }
 
 export async function getFactories() {
-  const res = await fetch(`${API_BASE}/factories`)
-  return handleResponse(res)
+  const response = await fetch(
+    `${API_BASE}/factories`
+  )
+
+  return handleResponse(response)
+}
+
+export async function getFactory(factoryId) {
+  const response = await fetch(
+    `${API_BASE}/factories/${encodeURIComponent(factoryId)}`
+  )
+
+  return handleResponse(response)
 }
 
 export async function getMemory() {
-  const res = await fetch(`${API_BASE}/memory`)
-  return handleResponse(res)
+  const response = await fetch(
+    `${API_BASE}/memory`
+  )
+
+  return handleResponse(response)
 }
 
-/**
- * Phase 9 — What-If Simulator. Re-runs Discovery -> Impact -> Decision for
- * an adjusted Waste DNA and returns the full result synchronously. Never
- * persisted to memory server-side (see backend/app/agents/decision_agent.py).
- */
-export async function simulateWhatIf({ wasteDna, maxHops = 2 }) {
-  const res = await fetch(`${API_BASE}/simulate`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ waste_dna: wasteDna, max_hops: maxHops }),
-  })
-  return handleResponse(res)
+export async function simulateWhatIf({
+  wasteDna,
+  maxHops = 2,
+}) {
+  const response = await fetch(
+    `${API_BASE}/simulate`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        waste_dna: wasteDna,
+        max_hops: maxHops,
+      }),
+    }
+  )
+
+  return handleResponse(response)
 }
