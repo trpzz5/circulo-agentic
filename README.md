@@ -198,7 +198,6 @@ docker-compose.yml
 | 7 | Orchestration + real-time SSE events | ✅ |
 | 8 | React command-center UI | ✅ |
 | 9 | Network graph + What-If simulator | ✅ |
-| 10 | Docker, automated tests, demo hardening | 🚧 in progress |
 
 ## Testing Philosophy
 
